@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* === Brand: verdes (primario) === */
+  --color-brand-green-900: #2c3a2a;
+  --color-brand-green-800: #40513b;  /* base de marca (hero, header) */
+  --color-brand-green-700: #4f6448;
+  --color-brand-green-600: #628141;  /* CTA primario */
+  --color-brand-green-500: #7a9658;
+  --color-brand-green-400: #9aae7b;  /* sage / acentos suaves */
+  --color-brand-green-300: #b8c89f;
+  --color-brand-green-200: #d4dec0;
+  --color-brand-green-100: #e8ecd9;
+
+  /* === Brand: cremas (neutro calido) === */
+  --color-brand-cream-100: #f4eee2;  /* fondo cálido casi blanco */
+  --color-brand-cream-200: #ede4cd;
+  --color-brand-cream-300: #e5d9b6;  /* crema base de marca */
+  --color-brand-cream-400: #d6c89c;
+  --color-brand-cream-500: #c4b385;
+
+  /* === Brand: naranjas (acento sol/calidez) === */
+  --color-brand-orange-300: #f4a76b;
+  --color-brand-orange-400: #ed934a;
+  --color-brand-orange-500: #e67e22;  /* acento principal (sol del logo) */
+  --color-brand-orange-600: #d36a1f;
+  --color-brand-orange-700: #c45a32;  /* hover oscuro */
+
+  /* === Slate: texto y UI neutra === */
+  --color-ink-900: #1f2a35;  /* texto fuerte */
+  --color-ink-700: #38475a;
+  --color-ink-500: #5a6878;  /* texto secundario */
+  --color-ink-400: #7a8694;
+  --color-ink-300: #a4b0bd;  /* texto deshabilitado / placeholder */
+  --color-ink-200: #c8d0d8;
+  --color-ink-100: #e6ebef;
+  --color-ink-50:  #f1f3f5;
+
+  /* === WhatsApp CTA (marca de WhatsApp, no de NorteWalk) === */
+  --color-whatsapp:       #25d366;
+  --color-whatsapp-hover: #1ebe5a;
+
+  /* === Aliases semánticos === */
+  --color-background: var(--color-brand-cream-100);
+  --color-foreground: var(--color-ink-900);
+  --color-surface:    #ffffff;
+  --color-muted:      var(--color-ink-500);
+  --color-border:     var(--color-ink-100);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}

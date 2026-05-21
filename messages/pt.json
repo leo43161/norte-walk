@@ -1,0 +1,129 @@
+{
+  "locale": {
+    "name": "Português",
+    "code": "pt"
+  },
+  "nav": {
+    "home": "Início",
+    "fwt": "Caminhadas a gorjeta",
+    "adventure": "Aventura",
+    "experience": "Experiências",
+    "gastronomy": "Gastronomia",
+    "search": "Buscar"
+  },
+  "hero": {
+    "title": "Descubra Tucumán com guias locais",
+    "subtitle": "Caminhadas, aventuras e experiências autênticas no norte da Argentina. Reserve direto pelo WhatsApp.",
+    "ctaPrimary": "Ver experiências",
+    "ctaSecondary": "Como funciona"
+  },
+  "common": {
+    "loading": "Carregando…",
+    "error": "Algo deu errado",
+    "retry": "Tentar novamente",
+    "notFound": "Não encontrado",
+    "viewMore": "Ver mais",
+    "reserveWhatsapp": "Reservar pelo WhatsApp"
+  },
+  "price": {
+    "free": "À gorjeta",
+    "from": "A partir de",
+    "perPerson": "por pessoa"
+  },
+  "home": {
+    "featuredTitle": "Experiências em destaque",
+    "featuredSubtitle": "Uma seleção para começar sua viagem por Tucumán.",
+    "topRatedTitle": "As mais bem avaliadas",
+    "topRatedSubtitle": "O que os viajantes mais recomendam.",
+    "emptyTitle": "Estamos adicionando experiências",
+    "emptyBody": "O catálogo está crescendo. Volte em breve ou nos escreva no WhatsApp se quiser algo sob medida.",
+    "errorTitle": "Não foi possível carregar o catálogo",
+    "errorBody": "Tente de novo em alguns minutos, ou nos avise se o problema persistir."
+  },
+  "detail": {
+    "back": "Voltar para experiências",
+    "description": "Descrição",
+    "itinerary": "Itinerário",
+    "included": "Incluído",
+    "notIncluded": "Não incluído",
+    "meetingPoint": "Ponto de encontro",
+    "viewOnMap": "Ver no Google Maps",
+    "schedule": "Horários",
+    "noSchedule": "Combinamos o horário pelo WhatsApp.",
+    "provider": "Guia",
+    "duration": "Duração",
+    "difficulty": "Dificuldade",
+    "groupSize": "Grupo",
+    "groupSizeValue": "De {min} a {max} pessoas",
+    "minAge": "Idade mínima",
+    "minAgeYears": "{n} anos",
+    "minAgeNone": "Sem restrição",
+    "askProvider": "Falar no WhatsApp",
+    "bookSoonNote": "Em breve você poderá reservar daqui. Por enquanto combinamos direto com o guia.",
+    "notFoundTitle": "Esta experiência não está disponível",
+    "notFoundBody": "Pode ter sido retirada do ar, ou o link está quebrado. Veja outras experiências ativas.",
+    "notFoundCta": "Ver todas as experiências"
+  },
+  "vertical": {
+    "fwt": {
+      "title": "Caminhadas a gorjeta em Tucumán",
+      "subtitle": "Free walking tours guiados por moradores. Você percorre o centro histórico e deixa o quanto achar justo."
+    },
+    "adventure": {
+      "title": "Aventura no norte argentino",
+      "subtitle": "Trilhas, caiaque e saídas ativas em Tucumán e arredores. Para quem viaja de tênis."
+    },
+    "experience": {
+      "title": "Experiências em Tucumán",
+      "subtitle": "Tours urbanos, culturais e de natureza com guias credenciados."
+    },
+    "gastronomy": {
+      "title": "Gastronomia tucumana",
+      "subtitle": "Empanadas, locro, vinho do vale. Sabores do norte com quem os cozinha."
+    },
+    "filters": {
+      "title": "Filtrar",
+      "city": "Cidade",
+      "cityAll": "Todas",
+      "type": "Modalidade",
+      "typeAll": "Todas",
+      "typeFree": "À gorjeta",
+      "typePaid": "Preço fixo",
+      "clear": "Limpar"
+    },
+    "results": {
+      "countOne": "1 experiência",
+      "countOther": "{n} experiências",
+      "emptyTitle": "Nenhuma experiência com esses filtros",
+      "emptyBody": "Tente limpar os filtros ou veja outras categorias."
+    }
+  },
+  "booking": {
+    "title": "Reservar pelo WhatsApp",
+    "intro": "Preencha seus dados e te levamos ao WhatsApp com o guia. A reserva é confirmada lá.",
+    "name": "Seu nome",
+    "namePlaceholder": "Como você se chama?",
+    "phone": "Telefone / WhatsApp",
+    "phoneHint": "Com código do país, ex. +55 11 …",
+    "email": "Email",
+    "emailOptional": "Opcional",
+    "pax": "Pessoas",
+    "date": "Data",
+    "time": "Horário",
+    "message": "Mensagem para o guia",
+    "messageOptional": "Opcional",
+    "messagePlaceholder": "Algo que o guia precise saber: idioma preferido, restrições, etc.",
+    "submit": "Continuar no WhatsApp",
+    "submitting": "Enviando…",
+    "askOnly": "Só quer perguntar? Fale com a gente direto no WhatsApp",
+    "availableDatesLabel": "Próximas datas disponíveis",
+    "noAvailableDates": "Sem datas publicadas nos próximos 60 dias. Combinamos pelo WhatsApp.",
+    "loadingDates": "Procurando datas disponíveis…",
+    "successTitle": "Tudo certo, abrindo o WhatsApp",
+    "successBody": "Se o app não abriu, clique aqui:",
+    "successOpenLink": "Abrir WhatsApp",
+    "errorTitle": "Não conseguimos registrar sua reserva",
+    "errorBody": "Tente de novo ou nos chame direto no WhatsApp.",
+    "errorRetry": "Tentar de novo"
+  }
+}

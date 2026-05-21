@@ -1,0 +1,129 @@
+{
+  "locale": {
+    "name": "English",
+    "code": "en"
+  },
+  "nav": {
+    "home": "Home",
+    "fwt": "Free walking tours",
+    "adventure": "Adventure",
+    "experience": "Experiences",
+    "gastronomy": "Gastronomy",
+    "search": "Search"
+  },
+  "hero": {
+    "title": "Discover Tucumán with local guides",
+    "subtitle": "Walking tours, adventure and authentic experiences in northern Argentina. Book directly via WhatsApp.",
+    "ctaPrimary": "Browse experiences",
+    "ctaSecondary": "How it works"
+  },
+  "common": {
+    "loading": "Loading…",
+    "error": "Something went wrong",
+    "retry": "Try again",
+    "notFound": "Not found",
+    "viewMore": "View more",
+    "reserveWhatsapp": "Book via WhatsApp"
+  },
+  "price": {
+    "free": "Tip-based",
+    "from": "From",
+    "perPerson": "per person"
+  },
+  "home": {
+    "featuredTitle": "Featured experiences",
+    "featuredSubtitle": "A handpicked selection to kick off your Tucumán trip.",
+    "topRatedTitle": "Top rated",
+    "topRatedSubtitle": "The picks travelers love the most.",
+    "emptyTitle": "We're adding more experiences",
+    "emptyBody": "The catalog is growing. Come back soon or message us on WhatsApp if you want something custom.",
+    "errorTitle": "Couldn't load the catalog",
+    "errorBody": "Try again in a few minutes, or let us know if the issue persists."
+  },
+  "detail": {
+    "back": "Back to experiences",
+    "description": "Description",
+    "itinerary": "Itinerary",
+    "included": "Included",
+    "notIncluded": "Not included",
+    "meetingPoint": "Meeting point",
+    "viewOnMap": "View on Google Maps",
+    "schedule": "Schedule",
+    "noSchedule": "We'll coordinate the time via WhatsApp.",
+    "provider": "Guide",
+    "duration": "Duration",
+    "difficulty": "Difficulty",
+    "groupSize": "Group",
+    "groupSizeValue": "From {min} to {max} people",
+    "minAge": "Minimum age",
+    "minAgeYears": "{n} years",
+    "minAgeNone": "No restriction",
+    "askProvider": "Message on WhatsApp",
+    "bookSoonNote": "Booking from here is coming soon. For now you coordinate directly with the guide.",
+    "notFoundTitle": "This experience is unavailable",
+    "notFoundBody": "It may have been taken down, or the link is broken. Have a look at the other active experiences.",
+    "notFoundCta": "Browse all experiences"
+  },
+  "vertical": {
+    "fwt": {
+      "title": "Free walking tours in Tucumán",
+      "subtitle": "Walks guided by locals through the historic center. Tip what you feel the tour was worth."
+    },
+    "adventure": {
+      "title": "Adventure in northern Argentina",
+      "subtitle": "Treks, kayaking and active outings in Tucumán and around. For travelers who pack hiking shoes."
+    },
+    "experience": {
+      "title": "Experiences in Tucumán",
+      "subtitle": "Urban, cultural and nature tours with licensed local guides."
+    },
+    "gastronomy": {
+      "title": "Tucumán cuisine",
+      "subtitle": "Empanadas, locro, valley wines. Northern flavors with the people who cook them."
+    },
+    "filters": {
+      "title": "Filter",
+      "city": "City",
+      "cityAll": "All",
+      "type": "Type",
+      "typeAll": "All",
+      "typeFree": "Tip-based",
+      "typePaid": "Fixed price",
+      "clear": "Clear"
+    },
+    "results": {
+      "countOne": "1 experience",
+      "countOther": "{n} experiences",
+      "emptyTitle": "No experiences match those filters",
+      "emptyBody": "Try clearing the filters or browse other categories."
+    }
+  },
+  "booking": {
+    "title": "Book via WhatsApp",
+    "intro": "Fill in your details and we'll send you to WhatsApp with the guide. You confirm the booking there.",
+    "name": "Your name",
+    "namePlaceholder": "What's your name?",
+    "phone": "Phone / WhatsApp",
+    "phoneHint": "Include country code, e.g. +1 415 …",
+    "email": "Email",
+    "emailOptional": "Optional",
+    "pax": "People",
+    "date": "Date",
+    "time": "Time",
+    "message": "Message for the guide",
+    "messageOptional": "Optional",
+    "messagePlaceholder": "Anything the guide should know: preferred language, accessibility, etc.",
+    "submit": "Continue on WhatsApp",
+    "submitting": "Sending…",
+    "askOnly": "Just want to ask something? Message us directly on WhatsApp",
+    "availableDatesLabel": "Next available dates",
+    "noAvailableDates": "No published dates in the next 60 days. We'll coordinate via WhatsApp.",
+    "loadingDates": "Looking up available dates…",
+    "successTitle": "All set, opening WhatsApp",
+    "successBody": "If the app didn't open, click here:",
+    "successOpenLink": "Open WhatsApp",
+    "errorTitle": "We couldn't register your booking",
+    "errorBody": "Try again or message us directly on WhatsApp.",
+    "errorRetry": "Retry"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls \"E:/leo/NorteWalk/AQUIIII/claude-design\")",
+      "Bash(ls \"C:/xampp/htdocs/nortewalk_api\")",
+      "Bash(npm run *)",
+      "Bash(curl -s -m 5 \"http://localhost/nortewalk_api/api/catalog/experiences?locale=es&limit=5\")",
+      "Bash(curl -s -m 5 \"http://localhost/nortewalk_api/api/catalog/experience?slug=city-tour-tucuman-api&locale=es\")"
+    ]
+  }
+}
