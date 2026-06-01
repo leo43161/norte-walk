@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 
-import ExperienceCard from "@/components/ExperienceCard";
+import TourCard from "@/components/nw/TourCard";
 import type { ExperienceListItem } from "@/lib/api";
 import type { Dictionary, Locale } from "@/lib/i18n";
 
@@ -62,7 +62,7 @@ export default function VerticalFilters({ items, locale, dict }: VerticalFilters
             id="vf-city"
             value={city}
             onChange={(e) => setCity(e.target.value)}
-            className="rounded-full border border-(--color-border) bg-white px-3 py-1.5 text-sm text-(--color-foreground) outline-none focus:border-(--color-brand-green-600) focus:ring-2 focus:ring-(--color-brand-green-300)"
+            className="rounded-full border border-(--color-border) bg-white px-3 py-1.5 text-sm text-(--color-foreground) outline-none focus:border-(--color-stone-600) focus:ring-2 focus:ring-(--color-stone-300)"
           >
             <option value="">{dict.vertical.filters.cityAll}</option>
             {cities.map((c) => (
@@ -97,7 +97,7 @@ export default function VerticalFilters({ items, locale, dict }: VerticalFilters
             <button
               type="button"
               onClick={clearFilters}
-              className="text-xs font-medium uppercase tracking-wider text-(--color-brand-orange-600) hover:text-(--color-brand-orange-700) hover:underline"
+              className="text-xs font-medium uppercase tracking-wider text-(--color-accent-600) hover:text-(--color-accent-700) hover:underline"
             >
               {dict.vertical.filters.clear}
             </button>
@@ -116,16 +116,16 @@ export default function VerticalFilters({ items, locale, dict }: VerticalFilters
             <button
               type="button"
               onClick={clearFilters}
-              className="mt-5 rounded-full bg-(--color-brand-green-700) px-5 py-2 text-sm font-semibold text-(--color-brand-cream-100) hover:bg-(--color-brand-green-800)"
+              className="mt-5 rounded-full bg-(--color-stone-700) px-5 py-2 text-sm font-semibold text-(--color-bone-100) hover:bg-(--color-stone-800)"
             >
               {dict.vertical.filters.clear}
             </button>
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((exp) => (
-            <ExperienceCard key={exp.id} exp={exp} locale={locale} dict={dict} />
+        <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+          {filtered.map((exp, idx) => (
+            <TourCard key={exp.id} exp={exp} locale={locale} dict={dict} index={idx} />
           ))}
         </div>
       )}
@@ -148,8 +148,8 @@ function TypeChip({
       onClick={onClick}
       className={
         active
-          ? "rounded-full bg-(--color-brand-green-700) px-3 py-1.5 text-xs font-semibold text-(--color-brand-cream-100)"
-          : "rounded-full border border-(--color-border) bg-white px-3 py-1.5 text-xs font-medium text-(--color-ink-700) hover:border-(--color-brand-green-600) hover:text-(--color-brand-green-800)"
+          ? "rounded-full bg-(--color-stone-700) px-3 py-1.5 text-xs font-semibold text-(--color-bone-100)"
+          : "rounded-full border border-(--color-border) bg-white px-3 py-1.5 text-xs font-medium text-(--color-ink-700) hover:border-(--color-stone-600) hover:text-(--color-stone-800)"
       }
     >
       {children}

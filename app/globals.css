@@ -1,60 +1,104 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* === Brand: verdes (primario) === */
-  --color-brand-green-900: #2c3a2a;
-  --color-brand-green-800: #40513b;  /* base de marca (hero, header) */
-  --color-brand-green-700: #4f6448;
-  --color-brand-green-600: #628141;  /* CTA primario */
-  --color-brand-green-500: #7a9658;
-  --color-brand-green-400: #9aae7b;  /* sage / acentos suaves */
-  --color-brand-green-300: #b8c89f;
-  --color-brand-green-200: #d4dec0;
-  --color-brand-green-100: #e8ecd9;
+  /* ============================================================
+     PALETA — "Selva & Brasa" (Norte Argentino)
+     ============================================================
+     stone   = verdes de la quebrada (profundos, casi negros)
+     bone    = cremas cálidos (fondo, surfaces sobre fondo)
+     accent  = brasa anaranjada (CTAs y acentos italic)
+     ink     = neutros slate (texto secundario, bordes)
+     ============================================================ */
 
-  /* === Brand: cremas (neutro calido) === */
-  --color-brand-cream-100: #f4eee2;  /* fondo cálido casi blanco */
-  --color-brand-cream-200: #ede4cd;
-  --color-brand-cream-300: #e5d9b6;  /* crema base de marca */
-  --color-brand-cream-400: #d6c89c;
-  --color-brand-cream-500: #c4b385;
+  /* === Stone (verdes profundos) === */
+  --color-stone-900: #161f15;  /* casi negro vegetal */
+  --color-stone-800: #1f2d1f;  /* verde quebrada profundo */
+  --color-stone-700: #2a3a26;  /* verde quebrada */
+  --color-stone-600: #4a5944;  /* oliva oscuro */
+  --color-stone-500: #5e6e58;  /* oliva apagado (stone-2 del brief) */
+  --color-stone-400: #7a8973;  /* oliva claro */
+  --color-stone-300: #a8b29f;  /* sage (stone-3 del brief) */
+  --color-stone-200: #c8d0c0;
+  --color-stone-100: #e1e6da;
 
-  /* === Brand: naranjas (acento sol/calidez) === */
-  --color-brand-orange-300: #f4a76b;
-  --color-brand-orange-400: #ed934a;
-  --color-brand-orange-500: #e67e22;  /* acento principal (sol del logo) */
-  --color-brand-orange-600: #d36a1f;
-  --color-brand-orange-700: #c45a32;  /* hover oscuro */
+  /* === Bone (cremas cálidos) === */
+  --color-bone-100: #f3efe4;   /* background principal (bone del brief) */
+  --color-bone-200: #e3dec9;   /* surfaces sobre bone (bone-2 del brief) */
+  --color-bone-300: #d3cca8;
+  --color-bone-400: #b8af85;
 
-  /* === Slate: texto y UI neutra === */
-  --color-ink-900: #1f2a35;  /* texto fuerte */
+  /* === Accent (brasa) === */
+  --color-accent-300: #e29478;
+  --color-accent-400: #d97a4d;
+  --color-accent-500: #c45a32;  /* brasa principal */
+  --color-accent-600: #a84826;
+  --color-accent-700: #8a3a1d;
+  --color-accent-800: #6b2c16;
+
+  /* === Ink (texto neutro) === */
+  --color-ink-900: #1f2a35;
   --color-ink-700: #38475a;
-  --color-ink-500: #5a6878;  /* texto secundario */
+  --color-ink-500: #5a6878;
   --color-ink-400: #7a8694;
-  --color-ink-300: #a4b0bd;  /* texto deshabilitado / placeholder */
+  --color-ink-300: #a4b0bd;
   --color-ink-200: #c8d0d8;
   --color-ink-100: #e6ebef;
   --color-ink-50:  #f1f3f5;
 
-  /* === WhatsApp CTA (marca de WhatsApp, no de NorteWalk) === */
+  /* === WhatsApp (marca externa, no NorteWalk) === */
   --color-whatsapp:       #25d366;
   --color-whatsapp-hover: #1ebe5a;
 
   /* === Aliases semánticos === */
-  --color-background: var(--color-brand-cream-100);
-  --color-foreground: var(--color-ink-900);
+  --color-background: var(--color-bone-100);
+  --color-foreground: var(--color-stone-800);
   --color-surface:    #ffffff;
-  --color-muted:      var(--color-ink-500);
-  --color-border:     var(--color-ink-100);
+  --color-muted:      var(--color-stone-500);
+  --color-border:     rgba(31, 45, 31, 0.10);
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* === Tipografía ===
+     --font-display: Fraunces (serif variable con SOFT axis)
+     --font-body:    DM Sans
+     --font-mono:    Geist Mono
+  */
+  --font-sans:    var(--font-body);
+  --font-serif:   var(--font-display);
+}
+
+html, body {
+  background: var(--color-background);
+  color: var(--color-foreground);
 }
 
 body {
-  background: var(--color-background);
-  color: var(--color-foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/* === Utility: titulares display ===
+   Fraunces variable, peso 400, leading muy apretado, SOFT axis activado
+   para la "personalidad" warm-roman que pide el brief. */
+.font-display {
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  font-feature-settings: "ss01", "ss02";
+  font-variation-settings: "SOFT" 50, "opsz" 96;
+}
+
+/* === Utility: acento de marca ===
+   Aplica SOLO a frases cortas dentro de titulares (ej: "Sentí su historia.").
+   Cursiva + brasa + Fraunces italic axis. Por el brief, máx 1 por título. */
+.italic-accent {
+  font-style: italic;
+  color: var(--color-accent-500);
+  font-variation-settings: "SOFT" 100, "opsz" 96;
+}
+
+/* === Utility: mono === */
+.font-mono {
+  font-family: var(--font-mono), ui-monospace, "Cascadia Mono", monospace;
+  letter-spacing: 0.06em;
 }

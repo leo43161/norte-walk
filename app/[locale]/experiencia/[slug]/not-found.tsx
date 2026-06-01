@@ -28,13 +28,13 @@ export default function ExperienceNotFound() {
   return (
     <section className="bg-(--color-background)">
       <div className="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center justify-center px-6 py-20 text-center">
-        <h1 className="text-3xl font-semibold text-(--color-foreground)">
+        <h1 className="font-display text-4xl text-(--color-foreground)">
           {dict.detail.notFoundTitle}
         </h1>
         <p className="mt-4 max-w-md text-(--color-muted)">{dict.detail.notFoundBody}</p>
         <Link
           href={`/${locale}/`}
-          className="mt-8 rounded-full bg-(--color-brand-green-700) px-6 py-3 text-sm font-semibold text-(--color-brand-cream-100) hover:bg-(--color-brand-green-800) transition-colors"
+          className="mt-8 rounded-full bg-(--color-stone-700) px-6 py-3 text-sm font-semibold text-(--color-bone-100) hover:bg-(--color-stone-800) transition-colors"
         >
           {dict.detail.notFoundCta}
         </Link>

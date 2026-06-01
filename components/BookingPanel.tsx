@@ -78,7 +78,7 @@ export default function BookingPanel({
         closeLabel={dict.locale.code === "en" ? "Close" : dict.locale.code === "pt" ? "Fechar" : "Cerrar"}
       >
         <div className="grid gap-0 md:grid-cols-[1fr_1.1fr]">
-          <aside className="bg-(--color-brand-green-800) text-(--color-brand-cream-100) p-6 md:p-8">
+          <aside className="bg-(--color-stone-800) text-(--color-bone-100) p-6 md:p-8">
             {recap}
           </aside>
           <div className="p-6 md:p-8">

@@ -74,7 +74,7 @@ export default function Modal({
         m-0 h-full max-h-full w-full max-w-full p-0
         bg-(--color-background) text-(--color-foreground)
         md:m-auto md:h-auto md:max-h-[90vh] md:w-[min(100%,56rem)] md:rounded-2xl md:shadow-2xl
-        backdrop:bg-(--color-brand-green-900)/60 backdrop:backdrop-blur-sm
+        backdrop:bg-(--color-stone-900)/60 backdrop:backdrop-blur-sm
         open:flex open:flex-col
       "
     >
@@ -87,7 +87,7 @@ export default function Modal({
           flex h-9 w-9 items-center justify-center rounded-full
           bg-(--color-surface) text-(--color-ink-700)
           shadow-sm ring-1 ring-(--color-border)
-          hover:bg-(--color-brand-cream-200) hover:text-(--color-foreground)
+          hover:bg-(--color-bone-200) hover:text-(--color-foreground)
         "
       >
         <span aria-hidden className="text-lg leading-none">×</span>

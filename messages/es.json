@@ -12,10 +12,38 @@
     "search": "Buscar"
   },
   "hero": {
-    "title": "Descubrí Tucumán con guías locales",
-    "subtitle": "Caminatas, aventuras y experiencias auténticas en el norte argentino. Reservá directo por WhatsApp.",
-    "ctaPrimary": "Ver experiencias",
-    "ctaSecondary": "Cómo funciona"
+    "kicker": "CAMINATAS A LA GORRA · TUCUMÁN",
+    "title": "Caminá el Norte. Sentí su historia.",
+    "titleLine1": "Caminá el Norte.",
+    "titleLine2": "Sentí su historia.",
+    "subtitle": "Free walking tours en Tucumán y experiencias del norte con guías locales. Coordinás todo por WhatsApp, sin pasarela de pagos.",
+    "ctaPrimary": "Reservá tu lugar",
+    "ctaSecondary": "Ver cómo funciona",
+    "galleryLabel": "Galería de experiencias en el norte"
+  },
+  "search": {
+    "destinationLabel": "Destino",
+    "destinationAll": "Todo el Norte",
+    "dateLabel": "Fecha",
+    "typeLabel": "Tipo de experiencia",
+    "typePlaceholder": "Elegí un tipo",
+    "submit": "Buscar tours"
+  },
+  "trust": {
+    "itemExperiences": "{n} experiencias activas",
+    "itemLicensed": "Guías habilitados",
+    "itemWhatsapp": "Reserva por WhatsApp",
+    "itemNoPayment": "Sin pasarela de pago"
+  },
+  "footer": {
+    "toursTitle": "Tours",
+    "guidesTitle": "Para guías",
+    "guidesRegister": "Cómo sumarte",
+    "guidesHelp": "Centro de ayuda",
+    "legalTitle": "Legal",
+    "legalTerms": "Términos y condiciones",
+    "legalPrivacy": "Política de privacidad",
+    "madeIn": "Hecho en el norte argentino"
   },
   "common": {
     "loading": "Cargando…",
@@ -27,18 +55,50 @@
   },
   "price": {
     "free": "A la gorra",
+    "freeBadge": "A LA GORRA",
     "from": "Desde",
     "perPerson": "por persona"
   },
   "home": {
-    "featuredTitle": "Experiencias destacadas",
+    "featuredTitle": "Esta semana en el Norte",
     "featuredSubtitle": "Una selección de salidas para arrancar tu viaje por Tucumán.",
+    "featuredCta": "Ver todas las caminatas",
+    "verticalsKicker": "QUÉ OFRECEMOS",
+    "verticalsTitle": "Caminatas a la gorra, primero",
+    "verticalsSubtitle": "NorteWalk arrancó como Free Walking Tours en Tucumán. Sumamos aventura, experiencias y gastronomía del norte.",
+    "verticalsFeaturedTag": "PRINCIPAL",
+    "verticalsCountOne": "1 tour",
+    "verticalsCountOther": "{n} tours",
+    "verticalsCta": "Ver",
+    "howCta": "Ver caminatas en Tucumán",
     "topRatedTitle": "Las mejor valoradas",
     "topRatedSubtitle": "Lo más recomendado por viajeros que ya pasaron por acá.",
     "emptyTitle": "Estamos sumando experiencias",
     "emptyBody": "El catálogo está creciendo. Volvé pronto o escribinos por WhatsApp si querés que armemos algo a medida.",
     "errorTitle": "No pudimos cargar el catálogo",
-    "errorBody": "Reintentá en unos minutos o avisanos si el problema sigue."
+    "errorBody": "Reintentá en unos minutos o avisanos si el problema sigue.",
+    "categoriesKicker": "EXPLORÁ POR",
+    "categoriesTitle": "Cuatro formas de conocer el norte",
+    "categoriesSubtitle": "Elegí cómo querés vivir Tucumán y mirá las experiencias disponibles.",
+    "howKicker": "CÓMO FUNCIONA",
+    "howTitle": "Tres pasos, sin vueltas",
+    "howStep1Title": "Elegí",
+    "howStep1Body": "Mirá guías locales por vertical y elegí la que te calza. Cada perfil dice quién es y qué hace.",
+    "howStep2Title": "Reservá",
+    "howStep2Body": "Llenás un mini formulario y te llevamos al chat del guía con tu pedido pre-armado.",
+    "howStep3Title": "Caminá",
+    "howStep3Body": "El guía coordina lugar y hora. Pagás directo a él. Después nos contás cómo fue.",
+    "whyKicker": "POR QUÉ NORTEWALK",
+    "whyTitle": "Hecho por la red local",
+    "whySubtitle": "No somos una OTA. Somos un directorio de guías habilitados del norte argentino.",
+    "why1Title": "Guías locales certificados",
+    "why1Body": "Cada guía está verificado y registrado en la provincia. Sabés con quién salís.",
+    "why2Title": "Reserva sin pagar",
+    "why2Body": "Coordinás todo por WhatsApp con el guía. Sin checkout, sin tarjeta, sin intermediarios.",
+    "why3Title": "Cancelación flexible",
+    "why3Body": "Hablás directo con el guía si tenés que reprogramar. No hay penalidades automáticas.",
+    "why4Title": "Hecho en el Norte",
+    "why4Body": "Curado por gente que vive en Tucumán, Salta y Jujuy. No por un algoritmo de Silicon Valley."
   },
   "detail": {
     "back": "Volver a experiencias",

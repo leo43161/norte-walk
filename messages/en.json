@@ -12,10 +12,38 @@
     "search": "Search"
   },
   "hero": {
-    "title": "Discover Tucumán with local guides",
-    "subtitle": "Walking tours, adventure and authentic experiences in northern Argentina. Book directly via WhatsApp.",
-    "ctaPrimary": "Browse experiences",
-    "ctaSecondary": "How it works"
+    "kicker": "FREE WALKING TOURS · TUCUMÁN",
+    "title": "Walk the North. Feel its history.",
+    "titleLine1": "Walk the North.",
+    "titleLine2": "Feel its history.",
+    "subtitle": "Free walking tours in Tucumán and experiences across the North with local guides. Coordinate everything on WhatsApp — no payment gateway.",
+    "ctaPrimary": "Book your spot",
+    "ctaSecondary": "See how it works",
+    "galleryLabel": "Gallery of experiences in the North"
+  },
+  "search": {
+    "destinationLabel": "Destination",
+    "destinationAll": "All of the North",
+    "dateLabel": "Date",
+    "typeLabel": "Type of experience",
+    "typePlaceholder": "Pick a type",
+    "submit": "Search tours"
+  },
+  "trust": {
+    "itemExperiences": "{n} active experiences",
+    "itemLicensed": "Licensed local guides",
+    "itemWhatsapp": "Book via WhatsApp",
+    "itemNoPayment": "No payment gateway"
+  },
+  "footer": {
+    "toursTitle": "Tours",
+    "guidesTitle": "For guides",
+    "guidesRegister": "How to join",
+    "guidesHelp": "Help center",
+    "legalTitle": "Legal",
+    "legalTerms": "Terms",
+    "legalPrivacy": "Privacy",
+    "madeIn": "Made in northern Argentina"
   },
   "common": {
     "loading": "Loading…",
@@ -27,18 +55,50 @@
   },
   "price": {
     "free": "Tip-based",
+    "freeBadge": "TIP-BASED",
     "from": "From",
     "perPerson": "per person"
   },
   "home": {
-    "featuredTitle": "Featured experiences",
+    "featuredTitle": "This week in the North",
     "featuredSubtitle": "A handpicked selection to kick off your Tucumán trip.",
+    "featuredCta": "See all walking tours",
+    "verticalsKicker": "WHAT WE OFFER",
+    "verticalsTitle": "Free walking tours first",
+    "verticalsSubtitle": "NorteWalk started as Free Walking Tours in Tucumán. We added adventure, experiences and northern cuisine.",
+    "verticalsFeaturedTag": "MAIN",
+    "verticalsCountOne": "1 tour",
+    "verticalsCountOther": "{n} tours",
+    "verticalsCta": "See",
+    "howCta": "See walking tours in Tucumán",
     "topRatedTitle": "Top rated",
     "topRatedSubtitle": "The picks travelers love the most.",
     "emptyTitle": "We're adding more experiences",
     "emptyBody": "The catalog is growing. Come back soon or message us on WhatsApp if you want something custom.",
     "errorTitle": "Couldn't load the catalog",
-    "errorBody": "Try again in a few minutes, or let us know if the issue persists."
+    "errorBody": "Try again in a few minutes, or let us know if the issue persists.",
+    "categoriesKicker": "BROWSE BY",
+    "categoriesTitle": "Four ways to see the north",
+    "categoriesSubtitle": "Pick the way you want to experience Tucumán and we'll show you what's on.",
+    "howKicker": "HOW IT WORKS",
+    "howTitle": "Three steps, no fuss",
+    "howStep1Title": "Pick",
+    "howStep1Body": "Browse local guides by category and pick the one that fits. Each profile tells you who they are.",
+    "howStep2Title": "Book",
+    "howStep2Body": "Fill in a short form and we'll open the guide's chat with your request pre-filled.",
+    "howStep3Title": "Walk",
+    "howStep3Body": "The guide confirms time and place. You pay them directly. Then tell us how it went.",
+    "whyKicker": "WHY NORTEWALK",
+    "whyTitle": "Built by the local network",
+    "whySubtitle": "We're not an OTA. We're a directory of licensed guides from northern Argentina.",
+    "why1Title": "Certified local guides",
+    "why1Body": "Every guide is verified and registered with the province. You know who you're going out with.",
+    "why2Title": "Booking without paying",
+    "why2Body": "You coordinate everything via WhatsApp with the guide. No checkout, no card, no middlemen.",
+    "why3Title": "Flexible cancellation",
+    "why3Body": "Talk directly to the guide if you need to reschedule. No automatic penalties.",
+    "why4Title": "Made in the North",
+    "why4Body": "Curated by people who live in Tucumán, Salta and Jujuy. Not by a Silicon Valley algorithm."
   },
   "detail": {
     "back": "Back to experiences",

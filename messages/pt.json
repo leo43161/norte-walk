@@ -12,10 +12,38 @@
     "search": "Buscar"
   },
   "hero": {
-    "title": "Descubra Tucumán com guias locais",
-    "subtitle": "Caminhadas, aventuras e experiências autênticas no norte da Argentina. Reserve direto pelo WhatsApp.",
-    "ctaPrimary": "Ver experiências",
-    "ctaSecondary": "Como funciona"
+    "kicker": "FREE WALKING TOURS · TUCUMÁN",
+    "title": "Caminhe o Norte. Sinta a história.",
+    "titleLine1": "Caminhe o Norte.",
+    "titleLine2": "Sinta a história.",
+    "subtitle": "Free walking tours em Tucumán e experiências por todo o norte com guias locais. Você combina tudo pelo WhatsApp, sem gateway de pagamento.",
+    "ctaPrimary": "Reserve seu lugar",
+    "ctaSecondary": "Veja como funciona",
+    "galleryLabel": "Galeria de experiências no norte"
+  },
+  "search": {
+    "destinationLabel": "Destino",
+    "destinationAll": "Todo o Norte",
+    "dateLabel": "Data",
+    "typeLabel": "Tipo de experiência",
+    "typePlaceholder": "Escolha um tipo",
+    "submit": "Buscar tours"
+  },
+  "trust": {
+    "itemExperiences": "{n} experiências ativas",
+    "itemLicensed": "Guias credenciados",
+    "itemWhatsapp": "Reserva pelo WhatsApp",
+    "itemNoPayment": "Sem gateway de pagamento"
+  },
+  "footer": {
+    "toursTitle": "Tours",
+    "guidesTitle": "Para guias",
+    "guidesRegister": "Como participar",
+    "guidesHelp": "Central de ajuda",
+    "legalTitle": "Legal",
+    "legalTerms": "Termos",
+    "legalPrivacy": "Privacidade",
+    "madeIn": "Feito no norte argentino"
   },
   "common": {
     "loading": "Carregando…",
@@ -27,18 +55,50 @@
   },
   "price": {
     "free": "À gorjeta",
+    "freeBadge": "À GORJETA",
     "from": "A partir de",
     "perPerson": "por pessoa"
   },
   "home": {
-    "featuredTitle": "Experiências em destaque",
+    "featuredTitle": "Esta semana no Norte",
     "featuredSubtitle": "Uma seleção para começar sua viagem por Tucumán.",
+    "featuredCta": "Ver todas as caminhadas",
+    "verticalsKicker": "O QUE OFERECEMOS",
+    "verticalsTitle": "Free walking tours, primeiro",
+    "verticalsSubtitle": "A NorteWalk começou como Free Walking Tours em Tucumán. Somamos aventura, experiências e gastronomia do norte.",
+    "verticalsFeaturedTag": "PRINCIPAL",
+    "verticalsCountOne": "1 tour",
+    "verticalsCountOther": "{n} tours",
+    "verticalsCta": "Ver",
+    "howCta": "Ver caminhadas em Tucumán",
     "topRatedTitle": "As mais bem avaliadas",
     "topRatedSubtitle": "O que os viajantes mais recomendam.",
     "emptyTitle": "Estamos adicionando experiências",
     "emptyBody": "O catálogo está crescendo. Volte em breve ou nos escreva no WhatsApp se quiser algo sob medida.",
     "errorTitle": "Não foi possível carregar o catálogo",
-    "errorBody": "Tente de novo em alguns minutos, ou nos avise se o problema persistir."
+    "errorBody": "Tente de novo em alguns minutos, ou nos avise se o problema persistir.",
+    "categoriesKicker": "EXPLORE POR",
+    "categoriesTitle": "Quatro jeitos de conhecer o norte",
+    "categoriesSubtitle": "Escolha como quer viver Tucumán e veja as experiências disponíveis.",
+    "howKicker": "COMO FUNCIONA",
+    "howTitle": "Três passos, sem complicação",
+    "howStep1Title": "Escolha",
+    "howStep1Body": "Veja os guias locais por categoria e escolha o que combina com você. Cada perfil mostra quem é o guia.",
+    "howStep2Title": "Reserve",
+    "howStep2Body": "Preenche um mini formulário e te levamos ao chat do guia com seu pedido pronto.",
+    "howStep3Title": "Caminhe",
+    "howStep3Body": "O guia combina o horário e o lugar. Você paga direto pra ele. Depois nos conta como foi.",
+    "whyKicker": "POR QUE NORTEWALK",
+    "whyTitle": "Feito pela rede local",
+    "whySubtitle": "Não somos uma OTA. Somos um diretório de guias credenciados do norte argentino.",
+    "why1Title": "Guias locais credenciados",
+    "why1Body": "Cada guia é verificado e registrado na província. Você sabe com quem está saindo.",
+    "why2Title": "Reserva sem pagar",
+    "why2Body": "Combina tudo pelo WhatsApp com o guia. Sem checkout, sem cartão, sem intermediários.",
+    "why3Title": "Cancelamento flexível",
+    "why3Body": "Você fala direto com o guia se precisar remarcar. Sem penalidades automáticas.",
+    "why4Title": "Feito no Norte",
+    "why4Body": "Curado por gente que mora em Tucumán, Salta e Jujuy. Não por um algoritmo do Vale do Silício."
   },
   "detail": {
     "back": "Voltar para experiências",

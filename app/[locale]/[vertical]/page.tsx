@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import Kicker from "@/components/nw/Kicker";
 import VerticalFilters from "@/components/VerticalFilters";
 import { getExperiences, type ExperienceListItem, type Vertical } from "@/lib/api";
 import { LOCALES, getDictionary, isLocale, type Locale } from "@/lib/i18n";
@@ -79,22 +80,20 @@ export default async function VerticalListingPage({ params }: VerticalPageProps)
   return (
     <>
       {/* Hero / breadcrumb */}
-      <section className="bg-(--color-brand-green-800) text-(--color-brand-cream-100)">
-        <div className="mx-auto max-w-6xl px-6 py-12 sm:py-16">
-          <nav className="mb-4 text-xs text-(--color-brand-cream-300)/80">
-            <Link href={`/${locale}/`} className="hover:text-(--color-brand-cream-100)">
+      <section className="bg-(--color-stone-800) text-(--color-bone-100)">
+        <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+          <nav className="mb-6 font-(family-name:--font-mono) text-[11px] tracking-[0.2em] text-(--color-bone-200)/70">
+            <Link href={`/${locale}/`} className="uppercase hover:text-(--color-bone-100)">
               {dict.nav.home}
             </Link>
             <span className="mx-2 opacity-60">/</span>
-            <span className="text-(--color-brand-cream-100)">{dict.nav[vertical]}</span>
+            <span className="uppercase text-(--color-bone-100)">{dict.nav[vertical]}</span>
           </nav>
-          <p className="text-xs uppercase tracking-widest text-(--color-brand-orange-400)">
-            {dict.nav[vertical]}
-          </p>
-          <h1 className="mt-2 max-w-3xl text-3xl font-semibold leading-tight sm:text-4xl">
+          <Kicker text={dict.nav[vertical]} tone="dark" />
+          <h1 className="font-display mt-5 max-w-3xl text-5xl leading-[1.05] sm:text-6xl">
             {meta.title}
           </h1>
-          <p className="mt-4 max-w-2xl text-(--color-brand-cream-300)">{meta.subtitle}</p>
+          <p className="mt-5 max-w-2xl text-(--color-bone-200)/85">{meta.subtitle}</p>
         </div>
       </section>
 
@@ -106,13 +105,13 @@ export default async function VerticalListingPage({ params }: VerticalPageProps)
 
           {status === "empty" && (
             <div className="mx-auto max-w-xl rounded-2xl border border-(--color-border) bg-(--color-surface) p-10 text-center shadow-sm">
-              <h2 className="text-2xl font-semibold text-(--color-foreground)">
+              <h2 className="font-display text-2xl text-(--color-foreground)">
                 {dict.home.emptyTitle}
               </h2>
               <p className="mt-3 text-(--color-muted)">{dict.home.emptyBody}</p>
               <Link
                 href={`/${locale}/`}
-                className="mt-6 inline-block rounded-full bg-(--color-brand-green-700) px-5 py-2 text-sm font-semibold text-(--color-brand-cream-100) hover:bg-(--color-brand-green-800)"
+                className="mt-6 inline-block rounded-full bg-(--color-stone-700) px-5 py-2 text-sm font-semibold text-(--color-bone-100) hover:bg-(--color-stone-800)"
               >
                 {dict.nav.home}
               </Link>
@@ -120,8 +119,8 @@ export default async function VerticalListingPage({ params }: VerticalPageProps)
           )}
 
           {status === "error" && (
-            <div className="mx-auto max-w-xl rounded-2xl border border-(--color-brand-orange-500)/30 bg-(--color-brand-orange-500)/5 p-10 text-center">
-              <h2 className="text-2xl font-semibold text-(--color-foreground)">
+            <div className="mx-auto max-w-xl rounded-2xl border border-(--color-accent-500)/30 bg-(--color-accent-500)/5 p-10 text-center">
+              <h2 className="font-display text-2xl text-(--color-foreground)">
                 {dict.home.errorTitle}
               </h2>
               <p className="mt-3 text-(--color-muted)">{dict.home.errorBody}</p>

@@ -190,8 +190,8 @@ function BookingFormInner({
   // ---------- Success state ----------
   if (successUrl) {
     return (
-      <div className="rounded-2xl border border-(--color-brand-green-300) bg-(--color-brand-green-100)/60 p-6">
-        <p className="text-sm font-semibold text-(--color-brand-green-800)">
+      <div className="rounded-2xl border border-(--color-stone-300) bg-(--color-stone-100)/60 p-6">
+        <p className="text-sm font-semibold text-(--color-stone-800)">
           {dict.booking.successTitle}
         </p>
         <p className="mt-2 text-sm text-(--color-ink-700)">{dict.booking.successBody}</p>
@@ -333,9 +333,9 @@ function BookingFormInner({
       {submitError && (
         <div
           role="alert"
-          className="rounded-xl border border-(--color-brand-orange-500)/30 bg-(--color-brand-orange-500)/5 p-3 text-sm"
+          className="rounded-xl border border-(--color-accent-500)/30 bg-(--color-accent-500)/5 p-3 text-sm"
         >
-          <p className="font-semibold text-(--color-brand-orange-700)">
+          <p className="font-semibold text-(--color-accent-700)">
             {dict.booking.errorTitle}
           </p>
           <p className="mt-1 text-(--color-ink-700)">{submitError}</p>
@@ -367,7 +367,7 @@ function BookingFormInner({
 // ---------- Subcomponentes ----------
 
 const inputClass =
-  "block w-full rounded-lg border border-(--color-border) bg-white px-3 py-2 text-sm text-(--color-foreground) shadow-xs outline-none focus:border-(--color-brand-green-600) focus:ring-2 focus:ring-(--color-brand-green-300)";
+  "block w-full rounded-lg border border-(--color-border) bg-white px-3 py-2 text-sm text-(--color-foreground) shadow-xs outline-none focus:border-(--color-stone-600) focus:ring-2 focus:ring-(--color-stone-300)";
 
 function Field({
   label,
@@ -390,7 +390,7 @@ function Field({
       >
         <span>
           {label}
-          {required && <span className="ml-0.5 text-(--color-brand-orange-600)">*</span>}
+          {required && <span className="ml-0.5 text-(--color-accent-600)">*</span>}
         </span>
         {hint && <span className="text-(--color-muted) font-normal">{hint}</span>}
       </label>
@@ -443,8 +443,8 @@ function DateChips({
               onClick={() => onPick(d)}
               className={
                 active
-                  ? "rounded-full bg-(--color-brand-green-700) px-3 py-1.5 text-xs font-semibold text-(--color-brand-cream-100)"
-                  : "rounded-full border border-(--color-border) bg-white px-3 py-1.5 text-xs font-medium text-(--color-ink-700) hover:border-(--color-brand-green-600) hover:text-(--color-brand-green-800)"
+                  ? "rounded-full bg-(--color-stone-700) px-3 py-1.5 text-xs font-semibold text-(--color-bone-100)"
+                  : "rounded-full border border-(--color-border) bg-white px-3 py-1.5 text-xs font-medium text-(--color-ink-700) hover:border-(--color-stone-600) hover:text-(--color-stone-800)"
               }
             >
               <span className="capitalize">{fmt.format(date)}</span>
