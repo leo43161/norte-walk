@@ -4,4 +4,4 @@
  * Fallback al puerto dev por si la var no está seteada — el build no falla,
  * pero el sitemap deployado tendría URLs locales: revisar en prod.
  */
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001").replace(/\/$/, "");
+export const SITE_URL = (process.env.SITE_URL || "http://localhost:3001").replace(/\/$/, "");

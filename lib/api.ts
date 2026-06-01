@@ -260,9 +260,9 @@ export interface AvailableDate {
 // ---------- Fetch helpers ----------
 
 function apiBase(): string {
-  const base = process.env.NEXT_PUBLIC_API_BASE;
+  const base = process.env.API_BASE;
   if (!base) {
-    throw new Error("NEXT_PUBLIC_API_BASE no está definido. Verificá .env.local.");
+    throw new Error("API_BASE no está definido. Verificá .env.local.");
   }
   return base.replace(/\/$/, "");
 }
