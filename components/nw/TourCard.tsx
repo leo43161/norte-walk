@@ -15,61 +15,56 @@ interface TourCardProps {
   exp: ExperienceListItem;
   locale: Locale;
   dict: Dictionary;
-  /** Índice 0-based del grid — se renderea como "01", "02", etc. */
+  /** Índice 0-based del grid (ya no se muestra, se mantiene por compatibilidad). */
   index?: number;
 }
 
 /**
- * Tarjeta editorial Paseo Norte.
+ * Tarjeta de tour "Norte Cálido".
  *
- *  - Aspect 4:5 (más vertical que mi viejo 4:3)
- *  - "01" numerado top-left mono semitransparente
- *  - Badge "GRATIS" o "$ 25.000" top-right mono uppercase
- *  - Título Fraunces 22px
- *  - Datos mono "4H · TREKKING · TUCUMÁN"
- *  - Rating con estrella accent
- *  - Hover: image scale 1.03, transition 400ms
- *
- * Cuando no hay cover, fallback a gradient OKLCH por vertical (no "NorteWalk" text).
+ * Tarjeta blanca contenida, redondeada y con sombra suave que se levanta al
+ * hover — se siente como una invitación, no como una lámina de revista.
+ *  - Imagen 4:3 arriba, badge de precio redondo + chip de categoría.
+ *  - Título Poppins, datos legibles (duración · dificultad · ciudad).
+ *  - Rating con estrellita naranja.
  */
-export default function TourCard({ exp, locale, dict, index = 0 }: TourCardProps) {
+export default function TourCard({ exp, locale, dict }: TourCardProps) {
   const cover = resolveImageUrl(exp.cover_image);
   const price = formatPrice(exp, dict, locale);
   const duration = formatDuration(exp.duration_min, locale);
   const rating = formatRating(exp.external_rating, exp.external_reviews_count);
   const verticalLabel = dict.nav[exp.vertical];
-  const number = String(index + 1).padStart(2, "0");
 
-  // Datos mono compactos: "4H · MODERADO · TUCUMÁN"
+  // Datos legibles: "2h 30m · Fácil · Tucumán"
   const dataLine = [
-    duration && duration.toUpperCase(),
-    exp.difficulty && difficultyLabel(exp.difficulty, locale).toUpperCase(),
-    exp.city && exp.city.replace(/-/g, " ").toUpperCase(),
+    duration,
+    exp.difficulty && difficultyLabel(exp.difficulty, locale),
+    exp.city && exp.city.replace(/-/g, " ").replace(/\b\w/g, (m) => m.toUpperCase()),
   ]
     .filter(Boolean)
-    .join(" · ");
+    .join("  ·  ");
 
-  // Gradient OKLCH placeholder según vertical
+  // Gradient placeholder por vertical (cuando no hay cover)
   const gradient: Record<typeof exp.vertical, string> = {
-    fwt: "linear-gradient(135deg, oklch(0.55 0.10 145), oklch(0.35 0.08 145))",
-    adventure: "linear-gradient(135deg, oklch(0.45 0.12 235), oklch(0.30 0.10 220))",
-    experience: "linear-gradient(135deg, oklch(0.70 0.13 70), oklch(0.50 0.15 50))",
-    gastronomy: "linear-gradient(135deg, oklch(0.55 0.15 30), oklch(0.40 0.13 25))",
+    fwt: "linear-gradient(135deg, #55694d, #36462f)",
+    adventure: "linear-gradient(135deg, #4a6d6a, #2f4744)",
+    experience: "linear-gradient(135deg, #ef9540, #d35400)",
+    gastronomy: "linear-gradient(135deg, #d96a3a, #93380a)",
   };
 
   return (
     <Link
       href={`/${locale}/experiencia/${exp.slug}/`}
-      className="group flex flex-col"
+      className="group flex flex-col overflow-hidden rounded-[20px] bg-white shadow-[0_10px_30px_-18px_rgba(40,51,31,0.45)] ring-1 ring-(--color-border) transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_22px_44px_-22px_rgba(40,51,31,0.5)]"
     >
-      <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[14px] bg-(--color-stone-200)">
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-(--color-stone-200)">
         {cover ? (
           <Image
             src={cover}
             alt={exp.title}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-            className="object-cover transition-transform duration-[400ms] ease-out group-hover:scale-[1.03]"
+            className="object-cover transition-transform duration-[450ms] ease-out group-hover:scale-[1.05]"
           />
         ) : (
           <div
@@ -79,33 +74,26 @@ export default function TourCard({ exp, locale, dict, index = 0 }: TourCardProps
           />
         )}
 
-        {/* Numerado top-left */}
-        <div className="absolute left-4 top-4 font-(family-name:--font-mono) text-xs uppercase tracking-[0.18em] text-(--color-bone-100) opacity-50">
-          {number}
-        </div>
-
-        {/* Precio top-right */}
-        <div className="absolute right-4 top-4 rounded-md bg-(--color-stone-900)/85 px-2.5 py-1 font-(family-name:--font-mono) text-[11px] uppercase tracking-[0.15em] text-(--color-bone-100) backdrop-blur">
-          {exp.type === "free" ? dict.price.freeBadge : price.label}
-        </div>
-
-        {/* Vertical label bottom-left */}
-        <div className="absolute bottom-4 left-4 font-(family-name:--font-mono) text-[11px] uppercase tracking-[0.18em] text-(--color-bone-100)">
+        {/* Chip de categoría arriba-izq */}
+        <span className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-(--color-stone-700) shadow-sm backdrop-blur">
           {verticalLabel}
-        </div>
+        </span>
+
+        {/* Precio arriba-der */}
+        <span className="absolute right-3 top-3 rounded-full bg-(--color-accent-500) px-3 py-1 text-xs font-bold text-white shadow-sm">
+          {exp.type === "free" ? dict.price.free : price.label}
+        </span>
       </div>
 
-      <div className="mt-4 flex flex-col gap-2">
-        <h3 className="font-display text-[22px] leading-[1.1] text-(--color-stone-800) transition-colors group-hover:text-(--color-accent-600)">
+      <div className="flex flex-1 flex-col gap-2 p-4">
+        <h3 className="font-display text-[19px] leading-snug text-(--color-stone-800) transition-colors group-hover:text-(--color-accent-600)">
           {exp.title}
         </h3>
         {dataLine && (
-          <p className="font-(family-name:--font-mono) text-[11px] uppercase tracking-[0.15em] text-(--color-stone-500)">
-            {dataLine}
-          </p>
+          <p className="text-[13px] font-medium text-(--color-stone-500)">{dataLine}</p>
         )}
         {rating && (
-          <p className="flex items-center gap-1.5 text-xs text-(--color-stone-700)">
+          <p className="mt-auto flex items-center gap-1.5 pt-1 text-sm font-semibold text-(--color-stone-700)">
             <span className="text-(--color-accent-500)" aria-hidden>
               ★
             </span>

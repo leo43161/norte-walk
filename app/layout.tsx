@@ -1,22 +1,20 @@
 import type { Metadata } from "next";
-import { DM_Sans, Fraunces, Geist_Mono } from "next/font/google";
+import { DM_Sans, Fraunces, Poppins } from "next/font/google";
 import "./globals.css";
 
 /**
- * Sistema tipográfico Paseo Norte (Selva & Brasa):
- *  - Display (titulares): Fraunces — serif variable opsz 9–144, weight 300–600,
- *    SOFT axis. Cursiva del axis SOLO para acentos de marca.
- *  - Body: DM Sans — sans humana, peso 400/500/600/700.
- *  - Mono: Geist Mono — datos, kickers, coordenadas, badges.
+ * Sistema tipográfico "Norte Cálido":
+ *  - Display (titulares): Poppins — geométrica redondeada, cercana y amigable.
+ *    Reemplaza a Fraunces para sacarle el aire "editorial/libro" a la página.
+ *  - Body: DM Sans — sans humana y muy legible.
+ *  - Logo: Fraunces — SOLO para el wordmark del logo (el usuario quiere
+ *    conservar la tipografía del logo). Vive en --font-logo, así cambiar los
+ *    titulares no toca la marca.
  */
-// Fraunces variable: sin `weight` para activar el axis variable de Next.
-// Los axes opsz (9–144) y SOFT (los seteamos via font-variation-settings en
-// .font-display y .italic-accent). Se pueden cargar styles italic + normal.
-const fraunces = Fraunces({
+const poppins = Poppins({
   variable: "--font-display",
   subsets: ["latin", "latin-ext"],
-  axes: ["opsz", "SOFT"],
-  style: ["normal", "italic"],
+  weight: ["500", "600", "700"],
   display: "swap",
 });
 
@@ -27,20 +25,21 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-mono",
+// Fraunces estático sólo para el logo (wordmark). Sin axes ni italic: no hace falta.
+const fraunces = Fraunces({
+  variable: "--font-logo",
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["500", "600"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
   title: {
-    default: "NorteWalk — Caminá el Norte",
+    default: "NorteWalk — Conocé Tucumán caminando",
     template: "%s · NorteWalk",
   },
   description:
-    "Tours guiados, caminatas a la gorra y experiencias auténticas en el Norte argentino. Reservás directo por WhatsApp.",
+    "Free walking tours y experiencias en Tucumán con guías locales que aman mostrar su tierra. Reservás en un toque por WhatsApp, sin tarjetas ni vueltas.",
 };
 
 export default function RootLayout({
@@ -51,7 +50,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${fraunces.variable} ${dmSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${poppins.variable} ${dmSans.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-(--color-background) text-(--color-foreground)">
         {children}

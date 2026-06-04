@@ -67,7 +67,7 @@ export default function NorteWalkLogo({
     return (
       <span
         className={className}
-        style={{ fontFamily: "var(--font-display), Georgia, serif", letterSpacing: "-0.01em" }}
+        style={{ fontFamily: "var(--font-logo), Georgia, serif", letterSpacing: "-0.01em" }}
         aria-label={ariaLabel}
       >
         NorteWalk
@@ -86,7 +86,7 @@ export default function NorteWalkLogo({
       {Mark}
       <span
         style={{
-          fontFamily: "var(--font-display), Georgia, serif",
+          fontFamily: "var(--font-logo), Georgia, serif",
           color: colors.word,
           fontSize: size * 0.66,
           fontWeight: 500,

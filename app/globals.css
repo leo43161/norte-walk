@@ -2,48 +2,57 @@
 
 @theme inline {
   /* ============================================================
-     PALETA — "Selva & Brasa" (Norte Argentino)
+     PALETA — "Norte Cálido" (amigable, confiable, vendedora)
      ============================================================
-     stone   = verdes de la quebrada (profundos, casi negros)
-     bone    = cremas cálidos (fondo, surfaces sobre fondo)
-     accent  = brasa anaranjada (CTAs y acentos italic)
-     ink     = neutros slate (texto secundario, bordes)
+     Mantiene los NOMBRES de tokens del sistema anterior
+     (stone / bone / accent / ink) para no romper el resto del
+     código, pero cambia los VALORES hacia algo más cálido y cercano.
+
+     stone  = verdes de marca (#40513B), tibios — ya no casi-negros
+     bone   = cremas aireados (fondo y superficies cálidas)
+     accent = naranja vivo de marca (#E67E22), alegre
+     ink    = neutros tibios (texto secundario), nada de slate frío
      ============================================================ */
 
-  /* === Stone (verdes profundos) === */
-  --color-stone-900: #161f15;  /* casi negro vegetal */
-  --color-stone-800: #1f2d1f;  /* verde quebrada profundo */
-  --color-stone-700: #2a3a26;  /* verde quebrada */
-  --color-stone-600: #4a5944;  /* oliva oscuro */
-  --color-stone-500: #5e6e58;  /* oliva apagado (stone-2 del brief) */
-  --color-stone-400: #7a8973;  /* oliva claro */
-  --color-stone-300: #a8b29f;  /* sage (stone-3 del brief) */
-  --color-stone-200: #c8d0c0;
-  --color-stone-100: #e1e6da;
+  /* === Stone (verdes de marca, cálidos) === */
+  --color-stone-900: #28331f;  /* verde profundo (footer) */
+  --color-stone-800: #36462f;  /* verde oscuro amable (secciones / hero) */
+  --color-stone-700: #40513b;  /* VERDE DE MARCA */
+  --color-stone-600: #556b4c;  /* oliva */
+  --color-stone-500: #5e7152;  /* oliva apagado (texto secundario sobre crema) */
+  --color-stone-400: #859476;  /* oliva claro */
+  --color-stone-300: #aebba1;  /* sage */
+  --color-stone-200: #cfd8c4;
+  --color-stone-100: #e6ebdd;
 
   /* === Bone (cremas cálidos) === */
-  --color-bone-100: #f3efe4;   /* background principal (bone del brief) */
-  --color-bone-200: #e3dec9;   /* surfaces sobre bone (bone-2 del brief) */
-  --color-bone-300: #d3cca8;
-  --color-bone-400: #b8af85;
+  --color-bone-100: #faf6ec;   /* background principal (aireado) */
+  --color-bone-200: #f1ead7;   /* surface sobre bone */
+  --color-bone-300: #e5d9b6;   /* CREMA DE MARCA (surface más marcada) */
+  --color-bone-400: #d3c49b;
 
-  /* === Accent (brasa) === */
-  --color-accent-300: #e29478;
-  --color-accent-400: #d97a4d;
-  --color-accent-500: #c45a32;  /* brasa principal */
-  --color-accent-600: #a84826;
-  --color-accent-700: #8a3a1d;
-  --color-accent-800: #6b2c16;
+  /* === Accent (naranja vivo de marca) === */
+  --color-accent-300: #f5b173;  /* durazno claro */
+  --color-accent-400: #ef9540;
+  --color-accent-500: #e67e22;  /* NARANJA DE MARCA (CTAs) */
+  --color-accent-600: #d35400;  /* hover, más profundo */
+  --color-accent-700: #b8460a;
+  --color-accent-800: #93380a;
 
-  /* === Ink (texto neutro) === */
-  --color-ink-900: #1f2a35;
-  --color-ink-700: #38475a;
-  --color-ink-500: #5a6878;
-  --color-ink-400: #7a8694;
-  --color-ink-300: #a4b0bd;
-  --color-ink-200: #c8d0d8;
-  --color-ink-100: #e6ebef;
-  --color-ink-50:  #f1f3f5;
+  /* === Sun (amarillo cálido, para detalles alegres) === */
+  --color-sun-300: #ffe3a3;
+  --color-sun-400: #fbcf6b;
+  --color-sun-500: #f4b740;
+
+  /* === Ink (neutros tibios, no slate frío) === */
+  --color-ink-900: #2b2a26;
+  --color-ink-700: #4a4842;
+  --color-ink-500: #6e6b62;
+  --color-ink-400: #8a8678;
+  --color-ink-300: #ada99b;
+  --color-ink-200: #cdc9bc;
+  --color-ink-100: #e8e4d8;
+  --color-ink-50:  #f3f0e7;
 
   /* === WhatsApp (marca externa, no NorteWalk) === */
   --color-whatsapp:       #25d366;
@@ -54,15 +63,18 @@
   --color-foreground: var(--color-stone-800);
   --color-surface:    #ffffff;
   --color-muted:      var(--color-stone-500);
-  --color-border:     rgba(31, 45, 31, 0.10);
+  --color-border:     rgba(64, 81, 59, 0.12);
 
   /* === Tipografía ===
-     --font-display: Fraunces (serif variable con SOFT axis)
+     --font-display: Poppins (titulares amigables)
      --font-body:    DM Sans
-     --font-mono:    Geist Mono
+     --font-logo:    Fraunces (sólo el wordmark del logo)
   */
-  --font-sans:    var(--font-body);
-  --font-serif:   var(--font-display);
+  --font-sans:   var(--font-body);
+  --font-serif:  var(--font-logo);
+
+  /* Radios redondeados = más amable */
+  --radius-card: 1.25rem;
 }
 
 html, body {
@@ -77,28 +89,25 @@ body {
 }
 
 /* === Utility: titulares display ===
-   Fraunces variable, peso 400, leading muy apretado, SOFT axis activado
-   para la "personalidad" warm-roman que pide el brief. */
+   Poppins semibold, leading cómodo. Nada de tracking negativo agresivo:
+   queremos que respire y se sienta cercano, no apretado/editorial. */
 .font-display {
-  font-family: var(--font-display), Georgia, "Times New Roman", serif;
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 0.95;
-  font-feature-settings: "ss01", "ss02";
-  font-variation-settings: "SOFT" 50, "opsz" 96;
+  font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
 }
 
 /* === Utility: acento de marca ===
-   Aplica SOLO a frases cortas dentro de titulares (ej: "Sentí su historia.").
-   Cursiva + brasa + Fraunces italic axis. Por el brief, máx 1 por título. */
+   Resalta una frase corta dentro de un titular (ej: "con guías de acá").
+   Naranja vivo + peso fuerte. Sin cursiva serif (eso sonaba a libro). */
 .italic-accent {
-  font-style: italic;
   color: var(--color-accent-500);
-  font-variation-settings: "SOFT" 100, "opsz" 96;
+  font-weight: 700;
+  font-style: normal;
 }
 
-/* === Utility: mono === */
-.font-mono {
-  font-family: var(--font-mono), ui-monospace, "Cascadia Mono", monospace;
-  letter-spacing: 0.06em;
+/* === Utility: logo wordmark === */
+.font-logo {
+  font-family: var(--font-logo), Georgia, "Times New Roman", serif;
 }

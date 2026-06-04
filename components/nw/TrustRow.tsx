@@ -4,19 +4,16 @@ interface TrustRowProps {
   dict: Dictionary;
   /** Cantidad real de experiencias activas (pasada desde el server). */
   experienceCount: number;
-  /** Color de texto base. Default bone-200 para usar sobre el hero stone. */
+  /** Color de texto base. Default light para usar sobre el hero verde. */
   tone?: "light" | "dark";
 }
 
 /**
- * Trust row debajo del buscador del hero.
- * 4 items separados por cuadrados accent 4×4.
- * Copy real basado en el catálogo, sin inflar números.
+ * Fila de confianza debajo del buscador del hero.
+ * Cada item es un chip con un check verde-claro/naranja — cercano y tranquilizador.
  */
 export default function TrustRow({ dict, experienceCount, tone = "light" }: TrustRowProps) {
-  const textColor = tone === "light" ? "text-(--color-bone-200)/80" : "text-(--color-stone-500)";
-  // Si no hay experiencias todavía, saltamos el primer item — no queda bien
-  // un "0 experiencias activas".
+  const textColor = tone === "light" ? "text-(--color-bone-100)/90" : "text-(--color-stone-700)";
   const items = [
     experienceCount > 0
       ? dict.trust.itemExperiences.replace("{n}", String(experienceCount))
@@ -26,18 +23,22 @@ export default function TrustRow({ dict, experienceCount, tone = "light" }: Trus
     dict.trust.itemNoPayment,
   ].filter((x): x is string => Boolean(x));
   return (
-    <ul
-      className={`flex flex-wrap items-center gap-x-5 gap-y-3 text-[13px] ${textColor}`}
-    >
-      {items.map((item, idx) => (
-        <li key={item} className="flex items-center gap-5">
-          {idx > 0 && (
-            <span
-              aria-hidden
-              className="inline-block h-1 w-1 bg-(--color-accent-500)"
+    <ul className={`flex flex-wrap items-center gap-x-5 gap-y-2.5 text-sm font-medium ${textColor}`}>
+      {items.map((item) => (
+        <li key={item} className="flex items-center gap-1.5">
+          <svg
+            viewBox="0 0 20 20"
+            className="h-4 w-4 shrink-0 text-(--color-accent-400)"
+            fill="currentColor"
+            aria-hidden
+          >
+            <path
+              fillRule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.7-9.3a1 1 0 00-1.4-1.4L9 10.6 7.7 9.3a1 1 0 00-1.4 1.4l2 2a1 1 0 001.4 0l4-4z"
+              clipRule="evenodd"
             />
-          )}
-          <span className="font-medium">{item}</span>
+          </svg>
+          <span>{item}</span>
         </li>
       ))}
     </ul>

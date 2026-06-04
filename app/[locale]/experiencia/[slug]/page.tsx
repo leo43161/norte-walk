@@ -37,12 +37,20 @@ interface DetailPageProps {
 export async function generateStaticParams() {
   try {
     const { items } = await getExperiences({ limit: 200 });
+    if (items.length === 0) {
+      throw new Error(
+        `Catalog vacío. API_BASE=${process.env.API_BASE ?? "(undefined)"}`,
+      );
+    }
     return LOCALES.flatMap((locale) =>
       items.map((exp) => ({ locale, slug: exp.slug })),
     );
   } catch (error) {
-    console.error("[detail] generateStaticParams falló (XAMPP off?):", error);
-    return [];
+    console.error(
+      `[detail] generateStaticParams falló. API_BASE=${process.env.API_BASE ?? "(undefined)"} ->`,
+      error,
+    );
+    throw error;
   }
 }
 
@@ -185,13 +193,21 @@ export default async function ExperienceDetailPage({ params }: DetailPageProps) 
       </nav>
 
       {/* Hero con cover */}
-      <section className="bg-(--color-stone-800) text-(--color-bone-100)">
+      <section className="relative isolate overflow-hidden bg-(--color-stone-700) text-(--color-bone-100)">
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10"
+          style={{
+            background:
+              "radial-gradient(ellipse 60% 70% at 95% 8%, rgba(230,126,34,0.26), transparent 60%)",
+          }}
+        />
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-14 md:grid-cols-[1fr_1.3fr] md:items-center md:py-20">
           <div>
-            <p className="mb-4 font-(family-name:--font-mono) text-[11px] uppercase tracking-[0.25em] text-(--color-accent-400)">
+            <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-(--color-bone-100)/10 px-3.5 py-1.5 text-[13px] font-semibold capitalize text-(--color-accent-300)">
               {verticalLabel} · {exp.category}
-            </p>
-            <h1 className="font-display text-4xl leading-[1.1] sm:text-5xl">{title}</h1>
+            </span>
+            <h1 className="font-display text-4xl leading-tight sm:text-5xl">{title}</h1>
             {shortDesc && (
               <p className="mt-5 text-lg text-(--color-bone-300)">{shortDesc}</p>
             )}
@@ -296,7 +312,7 @@ export default async function ExperienceDetailPage({ params }: DetailPageProps) 
                         </span>
                         <h3 className="font-semibold text-(--color-foreground)">{step.title}</h3>
                         {step.duration_min !== null && step.duration_min !== undefined && (
-                          <p className="mt-0.5 text-xs uppercase tracking-wider text-(--color-accent-500)">
+                          <p className="mt-0.5 text-xs font-semibold text-(--color-accent-600)">
                             {formatDuration(step.duration_min, locale)}
                           </p>
                         )}
@@ -348,7 +364,7 @@ export default async function ExperienceDetailPage({ params }: DetailPageProps) 
           <aside className="space-y-4 md:sticky md:top-6 md:self-start">
             {/* Provider + precio */}
             <div className="rounded-2xl border border-(--color-border) bg-(--color-surface) p-6 shadow-sm">
-              <p className="text-xs uppercase tracking-widest text-(--color-muted)">
+              <p className="text-xs font-semibold text-(--color-muted)">
                 {dict.detail.provider}
               </p>
               <p className="mt-1 text-lg font-semibold text-(--color-foreground)">
@@ -370,7 +386,7 @@ export default async function ExperienceDetailPage({ params }: DetailPageProps) 
               </dl>
 
               <div className="mt-5 border-t border-(--color-border) pt-5">
-                <p className="text-xs uppercase tracking-widest text-(--color-muted)">
+                <p className="text-xs font-semibold text-(--color-muted)">
                   {dict.detail.schedule}
                 </p>
                 {schedules.length > 0 ? (
@@ -413,7 +429,7 @@ export default async function ExperienceDetailPage({ params }: DetailPageProps) 
                     </div>
                   )}
                   <div>
-                    <p className="text-xs uppercase tracking-widest text-(--color-accent-400)">
+                    <p className="text-xs font-semibold text-(--color-accent-300)">
                       {verticalLabel} · {exp.category}
                     </p>
                     <h3 className="mt-1 text-xl font-semibold leading-tight text-(--color-bone-100)">
@@ -438,7 +454,7 @@ export default async function ExperienceDetailPage({ params }: DetailPageProps) 
                   </dl>
                   {meetingPoint && (
                     <div className="border-t border-(--color-bone-100)/15 pt-4">
-                      <p className="text-xs uppercase tracking-widest text-(--color-accent-400)">
+                      <p className="text-xs font-semibold text-(--color-accent-300)">
                         {dict.detail.meetingPoint}
                       </p>
                       <p className="mt-1 text-sm text-(--color-bone-100)">

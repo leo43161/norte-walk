@@ -80,20 +80,28 @@ export default async function VerticalListingPage({ params }: VerticalPageProps)
   return (
     <>
       {/* Hero / breadcrumb */}
-      <section className="bg-(--color-stone-800) text-(--color-bone-100)">
-        <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
-          <nav className="mb-6 font-(family-name:--font-mono) text-[11px] tracking-[0.2em] text-(--color-bone-200)/70">
-            <Link href={`/${locale}/`} className="uppercase hover:text-(--color-bone-100)">
+      <section className="relative isolate overflow-hidden bg-(--color-stone-700) text-(--color-bone-100)">
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10"
+          style={{
+            background:
+              "radial-gradient(ellipse 70% 70% at 90% 10%, rgba(230,126,34,0.28), transparent 60%)",
+          }}
+        />
+        <div className="mx-auto max-w-6xl px-6 py-14 sm:py-18">
+          <nav className="mb-5 text-sm font-medium text-(--color-bone-100)/70">
+            <Link href={`/${locale}/`} className="hover:text-(--color-bone-100)">
               {dict.nav.home}
             </Link>
             <span className="mx-2 opacity-60">/</span>
-            <span className="uppercase text-(--color-bone-100)">{dict.nav[vertical]}</span>
+            <span className="text-(--color-bone-100)">{dict.nav[vertical]}</span>
           </nav>
           <Kicker text={dict.nav[vertical]} tone="dark" />
-          <h1 className="font-display mt-5 max-w-3xl text-5xl leading-[1.05] sm:text-6xl">
+          <h1 className="font-display mt-4 max-w-3xl text-4xl leading-tight sm:text-5xl">
             {meta.title}
           </h1>
-          <p className="mt-5 max-w-2xl text-(--color-bone-200)/85">{meta.subtitle}</p>
+          <p className="mt-4 max-w-2xl text-[16px] text-(--color-bone-100)/85">{meta.subtitle}</p>
         </div>
       </section>
 

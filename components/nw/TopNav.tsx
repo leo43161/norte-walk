@@ -12,12 +12,11 @@ interface TopNavProps {
 }
 
 /**
- * Nav superior. Sticky con backdrop-blur sobre fondos claros; transparente
- * absoluta cuando está sobre el hero atmosférico (props.transparent).
+ * Nav superior "Norte Cálido". Barra verde de marca (cálida, no negra) con
+ * links amigables y un botón naranja de reserva para empujar la acción.
  *
- * Items según el brief: Tours (FWT) · Aventura · Experiencias · Gastronomía.
- * Locale switcher en mono uppercase a la derecha. No incluye "Sumate como guía"
- * (omitido en esta pasada por decisión de scope).
+ * El logo va en tone="color" porque la barra es verde: las montañas crema y
+ * el sol naranja se leen perfecto sobre ese fondo.
  */
 export default function TopNav({ locale, dict, transparent = false }: TopNavProps) {
   const items = [
@@ -29,47 +28,59 @@ export default function TopNav({ locale, dict, transparent = false }: TopNavProp
 
   const wrapperClass = transparent
     ? "absolute top-0 inset-x-0 z-30 text-(--color-bone-100)"
-    : "sticky top-0 z-30 border-b border-(--color-stone-700)/30 bg-(--color-stone-800)/95 text-(--color-bone-100) backdrop-blur-md";
+    : "sticky top-0 z-30 border-b border-(--color-bone-100)/10 bg-(--color-stone-700)/95 text-(--color-bone-100) backdrop-blur-md";
 
   return (
     <header className={wrapperClass}>
-      <nav className="mx-auto flex max-w-6xl items-center gap-8 px-6 py-5">
+      <nav className="mx-auto flex max-w-6xl items-center gap-8 px-6 py-4">
         <Link
           href={`/${locale}/`}
           className="text-(--color-bone-100) transition-opacity hover:opacity-80"
         >
-          <NorteWalkLogo variant="full" tone="color" size={32} ariaLabel="NorteWalk · Inicio" />
+          <NorteWalkLogo variant="full" tone="color" size={34} ariaLabel="NorteWalk · Inicio" />
         </Link>
-        <ul className="hidden gap-7 text-sm md:flex">
+        <ul className="hidden gap-7 text-[15px] font-medium md:flex">
           {items.map((item) => (
             <li key={item.key}>
               <Link
                 href={item.href}
-                className="text-(--color-bone-100)/80 transition-colors hover:text-(--color-accent-300)"
+                className="text-(--color-bone-100)/85 transition-colors hover:text-(--color-accent-300)"
               >
                 {dict.nav[item.key]}
               </Link>
             </li>
           ))}
         </ul>
-        <ul className="ml-auto flex items-center gap-1 font-(family-name:--font-mono) text-[11px] uppercase">
-          {LOCALES.map((l, idx) => (
-            <li key={l} className="flex items-center">
-              {idx > 0 && <span className="mx-1 text-(--color-bone-300)/30">·</span>}
-              <Link
-                href={`/${l}/`}
-                aria-current={l === locale ? "page" : undefined}
-                className={
-                  l === locale
-                    ? "text-(--color-accent-400) font-medium"
-                    : "text-(--color-bone-200)/60 transition-colors hover:text-(--color-bone-100)"
-                }
-              >
-                {l}
-              </Link>
-            </li>
-          ))}
-        </ul>
+
+        <div className="ml-auto flex items-center gap-4">
+          {/* Selector de idioma, amigable */}
+          <ul className="flex items-center gap-1 text-[13px] font-semibold uppercase">
+            {LOCALES.map((l, idx) => (
+              <li key={l} className="flex items-center">
+                {idx > 0 && <span className="mx-0.5 text-(--color-bone-100)/25">·</span>}
+                <Link
+                  href={`/${l}/`}
+                  aria-current={l === locale ? "page" : undefined}
+                  className={
+                    l === locale
+                      ? "text-(--color-accent-300)"
+                      : "text-(--color-bone-100)/55 transition-colors hover:text-(--color-bone-100)"
+                  }
+                >
+                  {l}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          {/* CTA naranja: empuja a ver/reservar caminatas */}
+          <Link
+            href={`/${locale}/fwt/`}
+            className="hidden rounded-full bg-(--color-accent-500) px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-(--color-accent-600) sm:inline-flex"
+          >
+            {dict.hero.ctaPrimary}
+          </Link>
+        </div>
       </nav>
     </header>
   );

@@ -70,7 +70,7 @@ export default function HeroCarousel({
     <div
       role="region"
       aria-label={ariaLabel}
-      className="relative h-full w-full overflow-hidden rounded-[18px] bg-(--color-stone-900) shadow-[0_30px_80px_-20px_rgba(0,0,0,0.55)]"
+      className="relative h-full w-full overflow-hidden rounded-[24px] bg-(--color-stone-900) shadow-[0_28px_70px_-26px_rgba(0,0,0,0.6)] ring-1 ring-white/10"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
@@ -94,14 +94,14 @@ export default function HeroCarousel({
               className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent"
             />
             {(slide.caption || slide.meta) && (
-              <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
+              <div className="absolute inset-x-0 bottom-0 p-6 sm:p-7">
                 {slide.meta && (
-                  <p className="font-(family-name:--font-mono) text-[10px] uppercase tracking-[0.22em] text-(--color-accent-300)">
+                  <p className="text-[13px] font-semibold text-(--color-accent-300)">
                     {slide.meta}
                   </p>
                 )}
                 {slide.caption && (
-                  <p className="font-display mt-2 text-2xl leading-tight text-(--color-bone-100) sm:text-[28px]">
+                  <p className="font-display mt-1.5 text-2xl leading-tight text-(--color-bone-100) sm:text-[26px]">
                     {slide.caption}
                   </p>
                 )}

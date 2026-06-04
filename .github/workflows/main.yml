@@ -41,10 +41,14 @@ jobs:
       # Si tu build necesita variables de entorno (ej: URL de API), añádelas aquí
       - name: Build static site
         run: npm run build
-        # Ejemplo si necesitaras variables de entorno:
+        # Variables de entorno necesarias para el build estático.
+        # API_BASE se setea explícito acá (no confiar en el campo `env` de
+        # next.config.ts: en Next 16 + Turbopack no siempre se propaga al
+        # runtime de generateStaticParams en CI, lo que rompe el output:export).
         env:
           IS_CPANEL_DEPLOY: "true"
-        #   NEXT_PUBLIC_ALGUNA_VAR: ${{ secrets.ALGUNA_VAR_PUBLICA }}
+          API_BASE: "https://amadamia.com.ar/nortewalk/api/"
+          SITE_URL: "https://nortewalk.com.ar/"
 
       # 5. Comprime la salida en un archivo ZIP
       # Nos aseguramos de entrar al directorio 'out' antes de comprimir

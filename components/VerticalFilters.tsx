@@ -55,7 +55,7 @@ export default function VerticalFilters({ items, locale, dict }: VerticalFilters
       {/* Toolbar */}
       <div className="mb-8 flex flex-wrap items-center gap-x-6 gap-y-3 border-b border-(--color-border) pb-4">
         <div className="flex items-center gap-2">
-          <label htmlFor="vf-city" className="text-xs font-medium uppercase tracking-wider text-(--color-muted)">
+          <label htmlFor="vf-city" className="text-sm font-semibold text-(--color-muted)">
             {dict.vertical.filters.city}
           </label>
           <select
@@ -75,7 +75,7 @@ export default function VerticalFilters({ items, locale, dict }: VerticalFilters
 
         <fieldset className="flex items-center gap-2">
           <legend className="sr-only">{dict.vertical.filters.type}</legend>
-          <span className="text-xs font-medium uppercase tracking-wider text-(--color-muted)">
+          <span className="text-sm font-semibold text-(--color-muted)">
             {dict.vertical.filters.type}
           </span>
           <div className="flex gap-1.5">
@@ -97,7 +97,7 @@ export default function VerticalFilters({ items, locale, dict }: VerticalFilters
             <button
               type="button"
               onClick={clearFilters}
-              className="text-xs font-medium uppercase tracking-wider text-(--color-accent-600) hover:text-(--color-accent-700) hover:underline"
+              className="text-sm font-semibold text-(--color-accent-600) hover:text-(--color-accent-700) hover:underline"
             >
               {dict.vertical.filters.clear}
             </button>
@@ -123,7 +123,7 @@ export default function VerticalFilters({ items, locale, dict }: VerticalFilters
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((exp, idx) => (
             <TourCard key={exp.id} exp={exp} locale={locale} dict={dict} index={idx} />
           ))}
