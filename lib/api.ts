@@ -53,6 +53,14 @@ export interface ExperienceItineraryStep {
   duration_min: Numeric | null;
 }
 
+export interface ExperienceLanguage {
+  id?: Numeric;
+  experience_id?: Numeric;
+  /** ISO 639-1: "es", "en", "pt", "fr", "it", "de"... */
+  language_code: string;
+  sort_order?: Numeric;
+}
+
 export interface ExperienceSchedule {
   id?: Numeric;
   experience_id?: Numeric;
@@ -182,6 +190,7 @@ export interface Experience {
   inclusions?: ExperienceInclusion[];
   itinerary?: ExperienceItineraryStep[];
   schedules?: ExperienceSchedule[];
+  languages?: ExperienceLanguage[];
 }
 
 export interface ProviderWithExperiences extends Provider {

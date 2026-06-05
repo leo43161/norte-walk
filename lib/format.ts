@@ -4,6 +4,7 @@ import {
   isTrue,
   type Experience,
   type ExperienceImage,
+  type ExperienceLanguage,
   type ExperienceListItem,
   type ExperienceSchedule,
   type I18nField,
@@ -186,6 +187,55 @@ const DIFFICULTY_LABELS: Record<Locale, Record<Experience["difficulty"], string>
 
 export function difficultyLabel(d: Experience["difficulty"], locale: Locale): string {
   return DIFFICULTY_LABELS[locale][d] ?? d;
+}
+
+// Nombres "endónimos + traducción" para los idiomas que un guía puede hablar.
+// Solo los más comunes para turismo en el norte argentino. Si el code no está
+// mapeado, se muestra el código tal cual en mayúsculas (ej. "JA" para japonés).
+const LANGUAGE_LABELS: Record<Locale, Record<string, string>> = {
+  es: {
+    es: "Español",
+    en: "Inglés",
+    pt: "Portugués",
+    fr: "Francés",
+    it: "Italiano",
+    de: "Alemán",
+  },
+  en: {
+    es: "Spanish",
+    en: "English",
+    pt: "Portuguese",
+    fr: "French",
+    it: "Italian",
+    de: "German",
+  },
+  pt: {
+    es: "Espanhol",
+    en: "Inglês",
+    pt: "Português",
+    fr: "Francês",
+    it: "Italiano",
+    de: "Alemão",
+  },
+};
+
+export function languageLabel(code: string, locale: Locale): string {
+  const c = (code || "").trim().toLowerCase();
+  return LANGUAGE_LABELS[locale][c] ?? c.toUpperCase();
+}
+
+/** Lista de idiomas única y ordenada por sort_order, lista para renderizar. */
+export function getLanguagesForDisplay(exp: Experience): ExperienceLanguage[] {
+  if (!exp.languages || exp.languages.length === 0) return [];
+  const seen = new Set<string>();
+  const unique: ExperienceLanguage[] = [];
+  for (const l of exp.languages) {
+    const code = (l.language_code || "").trim().toLowerCase();
+    if (!code || seen.has(code)) continue;
+    seen.add(code);
+    unique.push({ ...l, language_code: code });
+  }
+  return unique.sort((a, b) => Number(a.sort_order ?? 0) - Number(b.sort_order ?? 0));
 }
 
 /**

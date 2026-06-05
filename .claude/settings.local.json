@@ -61,7 +61,13 @@
       "Bash(curl -sX POST \"https://amadamia.com.ar/nortewalk/api/catalog/experiences\")",
       "Bash(curl -sI \"https://amadamia.com.ar/nortewalk/api/catalog/experiences\")",
       "Bash(curl -s -H \"User-Agent: node\" \"https://amadamia.com.ar/nortewalk/api/catalog/experiences?locale=es&limit=200&offset=0\")",
-      "Bash(curl -s -A \"\" \"https://amadamia.com.ar/nortewalk/api/catalog/experiences?locale=es&limit=200&offset=0\")"
+      "Bash(curl -s -A \"\" \"https://amadamia.com.ar/nortewalk/api/catalog/experiences?locale=es&limit=200&offset=0\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:4040/es/ --max-time 30)",
+      "Bash(ls \"E:\\\\leo\\\\NorteWalk\\\\AQUIIII\\\\c2731887_nortew \\(1\\).sql\")",
+      "Bash(ls \"C:\\\\xampp\\\\htdocs\\\\nortewalk_api\")",
+      "Bash(\"C:\\\\xampp\\\\mysql\\\\bin\\\\mysql.exe\" --version)",
+      "Bash(curl -s -X POST http://localhost/nortewalk_api/api/api/login -H \"Content-Type: application/json\" -d \"{\\\\\"email\\\\\":\\\\\"julito@nortewalk.com\\\\\",\\\\\"password\\\\\":\\\\\"admin123\\\\\"}\")",
+      "Bash(curl -s -X POST http://localhost/nortewalk_api/api/api/login -H \"Content-Type: application/json\" -d \"{\\\\\"email\\\\\":\\\\\"julito@nortewalk.com\\\\\",\\\\\"password\\\\\":\\\\\"julito123\\\\\"}\")"
     ]
   }
 }

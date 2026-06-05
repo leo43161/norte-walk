@@ -125,7 +125,18 @@
     "bookSoonNote": "Booking from here is coming soon. For now you coordinate directly with the guide.",
     "notFoundTitle": "This experience is unavailable",
     "notFoundBody": "It may have been taken down, or the link is broken. Have a look at the other active experiences.",
-    "notFoundCta": "Browse all experiences"
+    "notFoundCta": "Browse all experiences",
+    "galleryViewAll": "See all photos ({n})",
+    "galleryClose": "Close gallery",
+    "galleryPrev": "Previous photo",
+    "galleryNext": "Next photo",
+    "galleryPhotoOf": "Photo {i} of {n}",
+    "cancellation": "Cancellation policy",
+    "cancellationNonRefundable": "This activity is non-refundable.",
+    "info": "Additional info",
+    "shortInfo": "*Check your ticket for access details.",
+    "languages": "Guide languages",
+    "languagesNone": "Ask the guide on WhatsApp."
   },
   "vertical": {
     "fwt": {

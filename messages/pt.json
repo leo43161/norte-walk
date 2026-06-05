@@ -125,7 +125,18 @@
     "bookSoonNote": "Em breve você poderá reservar daqui. Por enquanto combinamos direto com o guia.",
     "notFoundTitle": "Esta experiência não está disponível",
     "notFoundBody": "Pode ter sido retirada do ar, ou o link está quebrado. Veja outras experiências ativas.",
-    "notFoundCta": "Ver todas as experiências"
+    "notFoundCta": "Ver todas as experiências",
+    "galleryViewAll": "Ver todas as fotos ({n})",
+    "galleryClose": "Fechar galeria",
+    "galleryPrev": "Foto anterior",
+    "galleryNext": "Próxima foto",
+    "galleryPhotoOf": "Foto {i} de {n}",
+    "cancellation": "Política de cancelamento",
+    "cancellationNonRefundable": "Esta atividade não é reembolsável.",
+    "info": "Informação adicional",
+    "shortInfo": "*Confira seu ingresso para detalhes de acesso.",
+    "languages": "Idiomas do guia",
+    "languagesNone": "Consulte o guia pelo WhatsApp."
   },
   "vertical": {
     "fwt": {

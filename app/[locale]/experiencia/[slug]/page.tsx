@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import BookingPanel from "@/components/BookingPanel";
+import ExperienceGallery, { type GalleryItem } from "@/components/ExperienceGallery";
 import {
   ApiError,
   getExperience,
@@ -22,8 +23,11 @@ import {
   formatTime,
   getCoverImage,
   getGalleryImages,
+  getLanguagesForDisplay,
   getSchedulesForLocale,
+  languageLabel,
   pickI18n,
+  resolveImageUrl,
   weekdayLabel,
 } from "@/lib/format";
 import { LOCALES, getDictionary, isLocale, type Locale } from "@/lib/i18n";
@@ -113,13 +117,24 @@ export default async function ExperienceDetailPage({ params }: DetailPageProps) 
   const meetingPoint = pickI18n(exp, "meeting_point");
   const cover = getCoverImage(exp);
   const gallery = getGalleryImages(exp);
-  const extraImages = gallery.filter((img) => !isTrue(img.is_cover)).slice(0, 4);
   const price = formatPrice(exp, dict, locale);
   const duration = formatDuration(exp.duration_min, locale);
   const difficulty = difficultyLabel(exp.difficulty, locale);
   const rating = formatRating(exp.external_rating, exp.external_reviews_count);
   const mapsUrl = buildMapsUrl(exp.latitude, exp.longitude);
   const schedules = getSchedulesForLocale(exp, locale);
+  const languages = getLanguagesForDisplay(exp);
+
+  // Items para la galería: si no hay imágenes, mostramos solo el cover.
+  const galleryItems: GalleryItem[] = (() => {
+    const items: GalleryItem[] = [];
+    for (const img of gallery) {
+      const url = resolveImageUrl(img.url);
+      if (url) items.push({ url, alt: img.alt_text ?? title });
+    }
+    if (items.length === 0 && cover) items.push({ url: cover, alt: title });
+    return items;
+  })();
 
   const minPax = Number(exp.min_pax);
   const maxPax = Number(exp.max_pax);
@@ -141,6 +156,9 @@ export default async function ExperienceDetailPage({ params }: DetailPageProps) 
   });
 
   const verticalLabel = dict.nav[exp.vertical as keyof typeof dict.nav] ?? exp.vertical;
+
+  const includedItems = exp.inclusions?.filter((i) => i.kind === "included") ?? [];
+  const excludedItems = exp.inclusions?.filter((i) => i.kind === "excluded") ?? [];
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -174,134 +192,178 @@ export default async function ExperienceDetailPage({ params }: DetailPageProps) 
 
   return (
     <>
+      {/* Galería arriba — full bleed sutil con padding lateral */}
+      <section className="bg-(--color-background) pt-4 sm:pt-6">
+        <ExperienceGallery
+          images={galleryItems}
+          title={title}
+          viewAllLabel={dict.detail.galleryViewAll}
+          closeLabel={dict.detail.galleryClose}
+          prevLabel={dict.detail.galleryPrev}
+          nextLabel={dict.detail.galleryNext}
+          photoOfLabel={dict.detail.galleryPhotoOf}
+        />
+      </section>
+
       {/* Breadcrumb */}
-      <nav className="bg-(--color-bone-100)/60 border-b border-(--color-border)">
-        <div className="mx-auto max-w-6xl px-6 py-3 text-sm">
-          <Link href={`/${locale}/`} className="text-(--color-muted) hover:text-(--color-foreground)">
+      <nav className="bg-(--color-background)">
+        <div className="mx-auto max-w-6xl px-4 pb-2 pt-5 text-xs sm:px-6 sm:text-sm">
+          <Link
+            href={`/${locale}/`}
+            className="text-(--color-muted) hover:text-(--color-foreground)"
+          >
             {dict.nav.home}
           </Link>
-          <span className="mx-2 text-(--color-ink-300)">/</span>
+          <span className="mx-1.5 text-(--color-ink-300)">/</span>
           <Link
             href={`/${locale}/${exp.vertical}/`}
             className="text-(--color-muted) hover:text-(--color-foreground)"
           >
             {verticalLabel}
           </Link>
-          <span className="mx-2 text-(--color-ink-300)">/</span>
+          <span className="mx-1.5 text-(--color-ink-300)">/</span>
           <span className="text-(--color-foreground)">{title}</span>
         </div>
       </nav>
 
-      {/* Hero con cover */}
-      <section className="relative isolate overflow-hidden bg-(--color-stone-700) text-(--color-bone-100)">
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10"
-          style={{
-            background:
-              "radial-gradient(ellipse 60% 70% at 95% 8%, rgba(230,126,34,0.26), transparent 60%)",
-          }}
-        />
-        <div className="mx-auto grid max-w-6xl gap-10 px-6 py-14 md:grid-cols-[1fr_1.3fr] md:items-center md:py-20">
-          <div>
-            <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-(--color-bone-100)/10 px-3.5 py-1.5 text-[13px] font-semibold capitalize text-(--color-accent-300)">
-              {verticalLabel} · {exp.category}
-            </span>
-            <h1 className="font-display text-4xl leading-tight sm:text-5xl">{title}</h1>
-            {shortDesc && (
-              <p className="mt-5 text-lg text-(--color-bone-300)">{shortDesc}</p>
-            )}
-            <div className="mt-6 flex flex-wrap gap-2 text-xs">
-              {duration && (
-                <span className="rounded-full bg-(--color-bone-100)/10 px-3 py-1">
-                  {duration}
-                </span>
-              )}
-              <span className="rounded-full bg-(--color-bone-100)/10 px-3 py-1 capitalize">
-                {difficulty}
+      {/* Cuerpo: título + contenido a la izq, sidebar de precio a la der */}
+      <section className="bg-(--color-background) pb-20">
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-6 sm:px-6 md:grid-cols-[1.6fr_1fr] md:py-10">
+          {/* Izquierda */}
+          <div className="space-y-8">
+            {/* Header de título */}
+            <header>
+              <span className="mb-3 inline-flex items-center gap-2 rounded-full bg-(--color-bone-200) px-3 py-1 text-[12px] font-semibold capitalize text-(--color-stone-700)">
+                {verticalLabel} · {exp.category}
               </span>
-              <span className="rounded-full bg-(--color-bone-100)/10 px-3 py-1 capitalize">
-                {exp.city.replace(/-/g, " ")}
-              </span>
-              {rating && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-(--color-accent-500)/15 px-3 py-1 text-(--color-bone-100)">
-                  <span className="text-(--color-accent-400)" aria-hidden>★</span>
-                  {rating.label}
+              <h1 className="font-display text-3xl leading-tight text-(--color-foreground) sm:text-4xl">
+                {title}
+              </h1>
+
+              {/* Rating + idiomas + duración row */}
+              <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-(--color-ink-700)">
+                {rating && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-(--color-sun-300)/60 px-3 py-1 text-xs font-semibold text-(--color-foreground)">
+                    <span className="text-(--color-accent-600)" aria-hidden>★</span>
+                    {rating.label}
+                  </span>
+                )}
+                {duration && (
+                  <span className="inline-flex items-center gap-1.5 text-xs text-(--color-muted)">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <circle cx="12" cy="12" r="9" />
+                      <path d="M12 7v5l3 2" />
+                    </svg>
+                    {duration}
+                  </span>
+                )}
+                <span className="inline-flex items-center gap-1.5 text-xs capitalize text-(--color-muted)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <path d="M12 21s-7-6.5-7-12a7 7 0 1 1 14 0c0 5.5-7 12-7 12z" />
+                    <circle cx="12" cy="9" r="2.5" />
+                  </svg>
+                  {exp.city.replace(/-/g, " ")}
                 </span>
-              )}
-            </div>
-          </div>
-          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-(--color-stone-700) shadow-lg">
-            {cover ? (
-              <Image
-                src={cover}
-                alt={title}
-                fill
-                priority
-                sizes="(max-width: 768px) 100vw, 60vw"
-                className="object-cover"
-              />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center text-(--color-bone-300)/40">
-                NorteWalk
+                <span className="inline-flex items-center gap-1.5 text-xs capitalize text-(--color-muted)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <path d="M3 18l6-6 4 4 8-8" />
+                  </svg>
+                  {difficulty}
+                </span>
               </div>
-            )}
-          </div>
-        </div>
-      </section>
 
-      {/* Galería extra */}
-      {extraImages.length > 0 && (
-        <section className="bg-(--color-background)">
-          <div className="mx-auto max-w-6xl px-6 py-8">
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-              {extraImages.map((img, idx) => {
-                const url = img.url.startsWith("http")
-                  ? img.url
-                  : getCoverImage({ ...exp, images: [img] }) ?? "";
-                return (
-                  <div
-                    key={img.id ?? `${img.url}-${idx}`}
-                    className="relative aspect-square overflow-hidden rounded-xl bg-(--color-stone-100)"
+              {languages.length > 0 && (
+                <div className="mt-4 flex flex-wrap items-center gap-2">
+                  <span
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-(--color-muted)"
+                    aria-hidden
                   >
-                    {url && (
-                      <Image
-                        src={url}
-                        alt={img.alt_text ?? title}
-                        fill
-                        sizes="(max-width: 768px) 50vw, 25vw"
-                        className="object-cover"
-                      />
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-      )}
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M5 8h14" />
+                      <path d="M10 5v3" />
+                      <path d="M7 8c0 4 3 7 6 9" />
+                      <path d="M14 8c0 4-3 7-6 9" />
+                      <path d="M13 14l4 7" />
+                      <path d="M21 21l-2-4" />
+                      <path d="M15 18h6" />
+                    </svg>
+                    <span className="sr-only">{dict.detail.languages}</span>
+                  </span>
+                  <ul className="flex flex-wrap gap-1.5" aria-label={dict.detail.languages}>
+                    {languages.map((l) => (
+                      <li
+                        key={l.id ?? l.language_code}
+                        className="inline-flex items-center rounded-full border border-(--color-border) bg-(--color-bone-200)/60 px-2.5 py-0.5 text-xs font-medium text-(--color-ink-700)"
+                      >
+                        {languageLabel(l.language_code, locale)}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
-      {/* Cuerpo */}
-      <section className="bg-(--color-background)">
-        <div className="mx-auto grid max-w-6xl gap-10 px-6 py-12 md:grid-cols-[1.6fr_1fr] md:py-16">
-          {/* Izquierda: contenido */}
-          <div className="space-y-12">
+              {shortDesc && (
+                <p className="mt-5 text-base leading-relaxed text-(--color-ink-700)">
+                  {shortDesc}
+                </p>
+              )}
+            </header>
+
+            {/* Policy card */}
+            <div className="rounded-xl border border-(--color-border) bg-(--color-bone-200)/50 p-4">
+              <div className="flex items-start gap-3">
+                <div className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-(--color-accent-500)/15 text-(--color-accent-600)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M12 8v4" />
+                    <path d="M12 16h.01" />
+                  </svg>
+                </div>
+                <div className="text-sm">
+                  <p className="font-semibold text-(--color-foreground)">
+                    {dict.detail.cancellation}
+                  </p>
+                  <p className="mt-0.5 text-(--color-muted)">
+                    {dict.detail.cancellationNonRefundable}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Qué incluye */}
+            {(includedItems.length > 0 || excludedItems.length > 0) && (
+              <Card>
+                <SectionHeader title={dict.detail.included} />
+                <div className="grid gap-6 md:grid-cols-2">
+                  <InclusionList
+                    items={includedItems}
+                    variant="included"
+                  />
+                  {excludedItems.length > 0 && (
+                    <InclusionList
+                      title={dict.detail.notIncluded}
+                      items={excludedItems}
+                      variant="excluded"
+                    />
+                  )}
+                </div>
+              </Card>
+            )}
+
+            {/* Descripción */}
             {longDesc && (
-              <article>
-                <h2 className="font-display mb-5 text-3xl text-(--color-foreground)">
-                  {dict.detail.description}
-                </h2>
-                <p className="whitespace-pre-line text-(--color-ink-700) leading-relaxed">
+              <Card>
+                <SectionHeader title={dict.detail.description} />
+                <p className="whitespace-pre-line leading-relaxed text-(--color-ink-700)">
                   {longDesc}
                 </p>
-              </article>
+              </Card>
             )}
 
+            {/* Itinerario */}
             {exp.itinerary && exp.itinerary.length > 0 && (
-              <article>
-                <h2 className="font-display mb-6 text-3xl text-(--color-foreground)">
-                  {dict.detail.itinerary}
-                </h2>
+              <Card>
+                <SectionHeader title={dict.detail.itinerary} />
                 <ol className="relative space-y-6 border-l-2 border-(--color-stone-200) pl-6">
                   {[...exp.itinerary]
                     .sort((a, b) => Number(a.step_order) - Number(b.step_order))
@@ -322,172 +384,225 @@ export default async function ExperienceDetailPage({ params }: DetailPageProps) 
                       </li>
                     ))}
                 </ol>
-              </article>
+              </Card>
             )}
 
-            {exp.inclusions && exp.inclusions.length > 0 && (
-              <article className="grid gap-6 md:grid-cols-2">
-                <InclusionList
-                  title={dict.detail.included}
-                  items={exp.inclusions.filter((i) => i.kind === "included")}
-                  variant="included"
-                />
-                <InclusionList
-                  title={dict.detail.notIncluded}
-                  items={exp.inclusions.filter((i) => i.kind === "excluded")}
-                  variant="excluded"
-                />
-              </article>
-            )}
-
+            {/* Punto de encuentro */}
             {meetingPoint && (
-              <article>
-                <h2 className="font-display mb-3 text-3xl text-(--color-foreground)">
-                  {dict.detail.meetingPoint}
-                </h2>
-                <p className="text-(--color-ink-700)">{meetingPoint}</p>
-                {mapsUrl && (
-                  <a
-                    href={mapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-(--color-accent-600) hover:text-(--color-accent-700) hover:underline"
-                  >
-                    {dict.detail.viewOnMap} →
-                  </a>
-                )}
-              </article>
+              <Card>
+                <SectionHeader title={dict.detail.meetingPoint} />
+                <div className="flex items-start gap-3">
+                  <div className="mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-(--color-accent-500)/15 text-(--color-accent-600)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <path d="M12 21s-7-6.5-7-12a7 7 0 1 1 14 0c0 5.5-7 12-7 12z" />
+                      <circle cx="12" cy="9" r="2.5" />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-semibold text-(--color-foreground)">{meetingPoint}</p>
+                    {mapsUrl && (
+                      <a
+                        href={mapsUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-1 inline-flex items-center gap-1 text-sm font-medium text-(--color-accent-600) hover:text-(--color-accent-700) hover:underline"
+                      >
+                        {dict.detail.viewOnMap} →
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </Card>
             )}
+
+            {/* Info adicional */}
+            <Card>
+              <SectionHeader title={dict.detail.info} />
+              <ul className="space-y-2 text-sm text-(--color-ink-700)">
+                <li className="flex items-start gap-2">
+                  <span className="mt-1.5 inline-block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-(--color-accent-500)" />
+                  <span>{dict.detail.shortInfo}</span>
+                </li>
+                {duration && (
+                  <li className="flex items-start gap-2">
+                    <span className="mt-1.5 inline-block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-(--color-accent-500)" />
+                    <span>
+                      <strong>{dict.detail.duration}:</strong> {duration}
+                    </span>
+                  </li>
+                )}
+                {groupSize && (
+                  <li className="flex items-start gap-2">
+                    <span className="mt-1.5 inline-block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-(--color-accent-500)" />
+                    <span>
+                      <strong>{dict.detail.groupSize}:</strong> {groupSize}
+                    </span>
+                  </li>
+                )}
+                <li className="flex items-start gap-2">
+                  <span className="mt-1.5 inline-block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-(--color-accent-500)" />
+                  <span>
+                    <strong>{dict.detail.minAge}:</strong> {minAgeLabel}
+                  </span>
+                </li>
+              </ul>
+            </Card>
           </div>
 
-          {/* Derecha: aside */}
+          {/* Aside derecha: panel de reserva */}
           <aside className="space-y-4 md:sticky md:top-6 md:self-start">
-            {/* Provider + precio */}
-            <div className="rounded-2xl border border-(--color-border) bg-(--color-surface) p-6 shadow-sm">
-              <p className="text-xs font-semibold text-(--color-muted)">
-                {dict.detail.provider}
-              </p>
-              <p className="mt-1 text-lg font-semibold text-(--color-foreground)">
-                {exp.provider_name}
-              </p>
-              <p className="text-sm text-(--color-muted) capitalize">
-                {exp.provider_city.replace(/-/g, " ")}
-              </p>
-              <div className="mt-5 border-t border-(--color-border) pt-5">
-                <p className="text-2xl font-bold text-(--color-foreground)">{price.label}</p>
-                {price.hint && <p className="text-sm text-(--color-muted)">{price.hint}</p>}
+            {/* Card de provider + precio */}
+            <div className="overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-surface) shadow-sm">
+              <div className="border-b border-(--color-border) bg-(--color-bone-200)/40 px-6 py-4">
+                <p className="text-xs font-semibold uppercase tracking-wide text-(--color-muted)">
+                  {dict.detail.provider}
+                </p>
+                <p className="mt-0.5 text-base font-semibold text-(--color-foreground)">
+                  {exp.provider_name}
+                </p>
+                <p className="text-xs text-(--color-muted) capitalize">
+                  {exp.provider_city.replace(/-/g, " ")}
+                </p>
               </div>
 
-              <dl className="mt-5 space-y-3 border-t border-(--color-border) pt-5 text-sm">
-                {duration && <InfoRow label={dict.detail.duration} value={duration} />}
-                <InfoRow label={dict.detail.difficulty} value={difficulty} />
-                {groupSize && <InfoRow label={dict.detail.groupSize} value={groupSize} />}
-                <InfoRow label={dict.detail.minAge} value={minAgeLabel} />
-              </dl>
-
-              <div className="mt-5 border-t border-(--color-border) pt-5">
-                <p className="text-xs font-semibold text-(--color-muted)">
-                  {dict.detail.schedule}
+              <div className="px-6 py-5">
+                <p className="text-xs font-semibold uppercase tracking-wide text-(--color-muted)">
+                  {dict.price.from}
                 </p>
-                {schedules.length > 0 ? (
-                  <ul className="mt-2 space-y-1.5 text-sm text-(--color-ink-700)">
-                    {schedules.map((s) => (
-                      <li key={s.id ?? `${s.day_of_week}-${s.start_time}`}>
-                        <span className="font-medium">{weekdayLabel(s.day_of_week, locale)}</span>
-                        <span className="ml-2 text-(--color-muted)">
-                          {formatTime(s.start_time)}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="mt-2 text-sm text-(--color-muted)">{dict.detail.noSchedule}</p>
+                <p className="mt-1 text-3xl font-bold text-(--color-foreground)">
+                  {price.label}
+                </p>
+                {price.hint && (
+                  <p className="text-xs text-(--color-muted)">{price.hint}</p>
                 )}
+
+                <dl className="mt-5 space-y-2.5 border-t border-(--color-border) pt-5 text-sm">
+                  {duration && <InfoRow label={dict.detail.duration} value={duration} />}
+                  <InfoRow label={dict.detail.difficulty} value={difficulty} />
+                  {groupSize && <InfoRow label={dict.detail.groupSize} value={groupSize} />}
+                  <InfoRow label={dict.detail.minAge} value={minAgeLabel} />
+                  {languages.length > 0 && (
+                    <InfoRow
+                      label={dict.detail.languages}
+                      value={languages
+                        .map((l) => languageLabel(l.language_code, locale))
+                        .join(" · ")}
+                    />
+                  )}
+                </dl>
+
+                <div className="mt-5 border-t border-(--color-border) pt-5">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-(--color-muted)">
+                    {dict.detail.schedule}
+                  </p>
+                  {schedules.length > 0 ? (
+                    <ul className="mt-2 space-y-1.5 text-sm text-(--color-ink-700)">
+                      {schedules.map((s) => (
+                        <li
+                          key={s.id ?? `${s.day_of_week}-${s.start_time}`}
+                          className="flex items-center justify-between"
+                        >
+                          <span className="font-medium">{weekdayLabel(s.day_of_week, locale)}</span>
+                          <span className="text-(--color-muted)">
+                            {formatTime(s.start_time)}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="mt-2 text-sm text-(--color-muted)">{dict.detail.noSchedule}</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="border-t border-(--color-border) px-6 py-5">
+                <BookingPanel
+                  experienceId={Number(exp.id)}
+                  minPax={minPax}
+                  maxPax={maxPax}
+                  fallbackWhatsappUrl={wa}
+                  locale={locale}
+                  dict={dict}
+                  priceLabel={price.label}
+                  recap={
+                    <div className="flex h-full flex-col gap-5">
+                      {cover && (
+                        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-(--color-stone-700)">
+                          <Image
+                            src={cover}
+                            alt={title}
+                            fill
+                            sizes="(max-width: 768px) 100vw, 28rem"
+                            className="object-cover"
+                          />
+                        </div>
+                      )}
+                      <div>
+                        <p className="text-xs font-semibold text-(--color-accent-300)">
+                          {verticalLabel} · {exp.category}
+                        </p>
+                        <h3 className="mt-1 text-xl font-semibold leading-tight text-(--color-bone-100)">
+                          {title}
+                        </h3>
+                      </div>
+                      <div className="rounded-xl bg-(--color-stone-900)/40 p-4">
+                        <p className="text-2xl font-bold">{price.label}</p>
+                        {price.hint && (
+                          <p className="text-xs text-(--color-bone-300)">{price.hint}</p>
+                        )}
+                      </div>
+                      <dl className="space-y-2.5 text-sm text-(--color-bone-300)">
+                        {duration && <RecapRow label={dict.detail.duration} value={duration} />}
+                        <RecapRow label={dict.detail.difficulty} value={difficulty} />
+                        {groupSize && <RecapRow label={dict.detail.groupSize} value={groupSize} />}
+                        <RecapRow label={dict.detail.minAge} value={minAgeLabel} />
+                        {languages.length > 0 && (
+                          <RecapRow
+                            label={dict.detail.languages}
+                            value={languages
+                              .map((l) => languageLabel(l.language_code, locale))
+                              .join(" · ")}
+                          />
+                        )}
+                      </dl>
+                      {meetingPoint && (
+                        <div className="border-t border-(--color-bone-100)/15 pt-4">
+                          <p className="text-xs font-semibold text-(--color-accent-300)">
+                            {dict.detail.meetingPoint}
+                          </p>
+                          <p className="mt-1 text-sm text-(--color-bone-100)">
+                            {meetingPoint}
+                          </p>
+                          {mapsUrl && (
+                            <a
+                              href={mapsUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="mt-1 inline-block text-xs font-medium text-(--color-accent-400) hover:text-(--color-accent-300) hover:underline"
+                            >
+                              {dict.detail.viewOnMap} →
+                            </a>
+                          )}
+                        </div>
+                      )}
+                      <a
+                        href={wa}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-auto inline-flex items-center justify-center gap-1 rounded-full border border-(--color-bone-100)/30 px-4 py-2 text-xs font-medium text-(--color-bone-100) transition-colors hover:bg-(--color-bone-100)/10"
+                      >
+                        {dict.booking.askOnly} →
+                      </a>
+                    </div>
+                  }
+                />
               </div>
             </div>
-
-            {/* Trigger del modal de reserva + sticky mobile CTA */}
-            <BookingPanel
-              experienceId={Number(exp.id)}
-              minPax={minPax}
-              maxPax={maxPax}
-              fallbackWhatsappUrl={wa}
-              locale={locale}
-              dict={dict}
-              priceLabel={price.label}
-              recap={
-                <div className="flex h-full flex-col gap-5">
-                  {cover && (
-                    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-(--color-stone-700)">
-                      <Image
-                        src={cover}
-                        alt={title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 28rem"
-                        className="object-cover"
-                      />
-                    </div>
-                  )}
-                  <div>
-                    <p className="text-xs font-semibold text-(--color-accent-300)">
-                      {verticalLabel} · {exp.category}
-                    </p>
-                    <h3 className="mt-1 text-xl font-semibold leading-tight text-(--color-bone-100)">
-                      {title}
-                    </h3>
-                  </div>
-                  <div className="rounded-xl bg-(--color-stone-900)/40 p-4">
-                    <p className="text-2xl font-bold">{price.label}</p>
-                    {price.hint && (
-                      <p className="text-xs text-(--color-bone-300)">{price.hint}</p>
-                    )}
-                  </div>
-                  <dl className="space-y-2.5 text-sm text-(--color-bone-300)">
-                    {duration && (
-                      <RecapRow label={dict.detail.duration} value={duration} />
-                    )}
-                    <RecapRow label={dict.detail.difficulty} value={difficulty} />
-                    {groupSize && (
-                      <RecapRow label={dict.detail.groupSize} value={groupSize} />
-                    )}
-                    <RecapRow label={dict.detail.minAge} value={minAgeLabel} />
-                  </dl>
-                  {meetingPoint && (
-                    <div className="border-t border-(--color-bone-100)/15 pt-4">
-                      <p className="text-xs font-semibold text-(--color-accent-300)">
-                        {dict.detail.meetingPoint}
-                      </p>
-                      <p className="mt-1 text-sm text-(--color-bone-100)">
-                        {meetingPoint}
-                      </p>
-                      {mapsUrl && (
-                        <a
-                          href={mapsUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="mt-1 inline-block text-xs font-medium text-(--color-accent-400) hover:text-(--color-accent-300) hover:underline"
-                        >
-                          {dict.detail.viewOnMap} →
-                        </a>
-                      )}
-                    </div>
-                  )}
-                  <a
-                    href={wa}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-auto inline-flex items-center justify-center gap-1 rounded-full border border-(--color-bone-100)/30 px-4 py-2 text-xs font-medium text-(--color-bone-100) transition-colors hover:bg-(--color-bone-100)/10"
-                  >
-                    {dict.booking.askOnly} →
-                  </a>
-                </div>
-              }
-            />
           </aside>
         </div>
       </section>
 
-      {/* Schema.org JSON-LD (la sticky mobile CTA la maneja BookingPanel) */}
+      {/* Schema.org JSON-LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -497,6 +612,22 @@ export default async function ExperienceDetailPage({ params }: DetailPageProps) 
 }
 
 // ---------- Subcomponentes ----------
+
+function Card({ children }: { children: React.ReactNode }) {
+  return (
+    <article className="rounded-2xl border border-(--color-border) bg-(--color-surface) p-6 shadow-sm sm:p-7">
+      {children}
+    </article>
+  );
+}
+
+function SectionHeader({ title }: { title: string }) {
+  return (
+    <h2 className="font-display mb-5 text-2xl text-(--color-foreground)">
+      {title}
+    </h2>
+  );
+}
 
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
@@ -521,7 +652,7 @@ function InclusionList({
   items,
   variant,
 }: {
-  title: string;
+  title?: string;
   items: Experience["inclusions"] extends (infer T)[] | undefined ? T[] : never;
   variant: "included" | "excluded";
 }) {
@@ -529,17 +660,26 @@ function InclusionList({
   const sorted = [...items].sort(
     (a, b) => Number(a.sort_order ?? 0) - Number(b.sort_order ?? 0),
   );
-  const icon = variant === "included" ? "✓" : "✕";
-  const iconColor =
-    variant === "included" ? "text-(--color-stone-600)" : "text-(--color-accent-700)";
+  const isIncluded = variant === "included";
   return (
     <div>
-      <h3 className="mb-3 text-lg font-semibold text-(--color-foreground)">{title}</h3>
-      <ul className="space-y-2 text-sm text-(--color-ink-700)">
+      {title && (
+        <h3 className="mb-3 text-base font-semibold text-(--color-foreground)">
+          {title}
+        </h3>
+      )}
+      <ul className="space-y-2.5 text-sm text-(--color-ink-700)">
         {sorted.map((item, i) => (
-          <li key={item.id ?? `${variant}-${i}`} className="flex items-start gap-2">
-            <span aria-hidden className={`mt-0.5 font-bold ${iconColor}`}>
-              {icon}
+          <li key={item.id ?? `${variant}-${i}`} className="flex items-start gap-2.5">
+            <span
+              aria-hidden
+              className={`mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-bold ${
+                isIncluded
+                  ? "bg-(--color-stone-600)/15 text-(--color-stone-600)"
+                  : "bg-(--color-accent-500)/15 text-(--color-accent-700)"
+              }`}
+            >
+              {isIncluded ? "✓" : "✕"}
             </span>
             <span>{item.text}</span>
           </li>
