@@ -49,7 +49,7 @@ export default function Hero({ locale, dict, cities, experienceCount, slides }: 
       />
 
       {/* Contenido */}
-      <div className="relative mx-auto grid max-w-6xl gap-10 px-6 pt-24 pb-16 sm:pt-28 sm:pb-20 lg:grid-cols-12 lg:gap-12 lg:pt-28 lg:pb-24">
+      <div className="relative mx-auto grid max-w-6xl gap-10 px-6 pt-12 pb-16 sm:pt-15 sm:pb-20 lg:grid-cols-12 lg:gap-12 lg:pt-28 lg:pb-24">
         {/* Columna izquierda: copy + buscador */}
         <div className="lg:col-span-7 lg:order-1 order-2">
           <span className="inline-flex items-center gap-2 rounded-full bg-(--color-bone-100)/10 px-4 py-2 text-sm font-semibold text-(--color-accent-300) ring-1 ring-inset ring-(--color-bone-100)/15">

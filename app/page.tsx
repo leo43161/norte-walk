@@ -13,13 +13,13 @@ export default function RootRedirect() {
       <meta httpEquiv="refresh" content={`0; url=${target}`} />
       <link rel="canonical" href={target} />
       <main className="min-h-screen flex items-center justify-center px-6">
-        <p className="text-(--color-muted) text-sm">
+        {/* <p className="text-(--color-muted) text-sm">
           Redirigiendo a{" "}
           <Link href={target} className="underline text-(--color-foreground)">
             NorteWalk
           </Link>
           …
-        </p>
+        </p> */}
       </main>
     </>
   );
