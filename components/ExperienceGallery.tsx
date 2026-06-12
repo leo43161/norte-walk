@@ -67,12 +67,21 @@ export default function ExperienceGallery({
   if (total === 0) return null;
 
   const main = images[0];
-  const thumbs = images.slice(1, 5);
-  const fillCount = 4 - thumbs.length;
+  // Cada miniatura guarda el índice REAL que abre en el lightbox.
+  const realThumbs = images.slice(1, 5).map((item, i) => ({ item, realIdx: i + 1 }));
+  const fillCount = 4 - realThumbs.length;
+  // Con 1–2 fotos repetimos la principal para no dejar huecos en el mosaico.
+  // Esos rellenos apuntan al índice 0 (la principal): así el click abre una
+  // foto que existe en vez de un índice fuera de rango (que crasheaba).
   const filledThumbs =
-    fillCount > 0 ? [...thumbs, ...Array.from({ length: fillCount }, () => main)] : thumbs;
+    fillCount > 0
+      ? [
+          ...realThumbs,
+          ...Array.from({ length: fillCount }, () => ({ item: main, realIdx: 0 })),
+        ]
+      : realThumbs;
   const extraCount = Math.max(0, total - 5);
-  const active = images[activeIdx];
+  const active = images[activeIdx] ?? main;
 
   return (
     <>
@@ -98,10 +107,9 @@ export default function ExperienceGallery({
 
             {/* Grid 2x2 desktop */}
             <div className="hidden grid-cols-2 grid-rows-2 gap-2 md:grid">
-              {filledThumbs.map((img, idx) => {
+              {filledThumbs.map(({ item: img, realIdx }, idx) => {
                 const isLast = idx === filledThumbs.length - 1;
                 const showCount = isLast && extraCount > 0;
-                const realIdx = idx + 1;
                 return (
                   <button
                     key={`${img.url}-${idx}`}

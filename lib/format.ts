@@ -224,6 +224,38 @@ export function languageLabel(code: string, locale: Locale): string {
   return LANGUAGE_LABELS[locale][c] ?? c.toUpperCase();
 }
 
+// Bandera representativa por idioma de tour. Para "es" usamos 🇦🇷 (somos
+// Argentina, no España); "pt" → 🇧🇷 porque el público es brasileño.
+const LANGUAGE_FLAGS: Record<string, string> = {
+  es: "🇦🇷",
+  en: "🇬🇧",
+  pt: "🇧🇷",
+  fr: "🇫🇷",
+  it: "🇮🇹",
+  de: "🇩🇪",
+};
+
+export function languageFlag(code: string): string {
+  return LANGUAGE_FLAGS[(code || "").trim().toLowerCase()] ?? "🌐";
+}
+
+/**
+ * Parsea el CSV de idiomas que manda el listado ("es,en,pt") a códigos
+ * únicos normalizados, preservando el orden.
+ */
+export function parseLanguagesCsv(csv: string | null | undefined): string[] {
+  if (!csv) return [];
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const raw of csv.split(",")) {
+    const code = raw.trim().toLowerCase();
+    if (!code || seen.has(code)) continue;
+    seen.add(code);
+    out.push(code);
+  }
+  return out;
+}
+
 /** Lista de idiomas única y ordenada por sort_order, lista para renderizar. */
 export function getLanguagesForDisplay(exp: Experience): ExperienceLanguage[] {
   if (!exp.languages || exp.languages.length === 0) return [];

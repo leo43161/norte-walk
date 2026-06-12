@@ -51,14 +51,22 @@ export default function Footer({ locale, dict }: FooterProps) {
 
           {/* Para guías */}
           <FooterCol title={dict.footer.guidesTitle}>
-            <li className="text-(--color-bone-100)/80">{dict.footer.guidesRegister}</li>
-            <li className="text-(--color-bone-100)/80">{dict.footer.guidesHelp}</li>
+            <li>
+              <FooterLink href={`/${locale}/sumate/`}>{dict.footer.guidesRegister}</FooterLink>
+            </li>
+            <li>
+              <FooterLink href={`/${locale}/ayuda/`}>{dict.footer.guidesHelp}</FooterLink>
+            </li>
           </FooterCol>
 
           {/* Legal */}
           <FooterCol title={dict.footer.legalTitle}>
-            <li className="text-(--color-bone-100)/80">{dict.footer.legalTerms}</li>
-            <li className="text-(--color-bone-100)/80">{dict.footer.legalPrivacy}</li>
+            <li>
+              <FooterLink href={`/${locale}/terminos/`}>{dict.footer.legalTerms}</FooterLink>
+            </li>
+            <li>
+              <FooterLink href={`/${locale}/privacidad/`}>{dict.footer.legalPrivacy}</FooterLink>
+            </li>
           </FooterCol>
         </div>
 
@@ -81,5 +89,16 @@ function FooterCol({ title, children }: { title: string; children: React.ReactNo
       <p className="text-sm font-bold text-(--color-accent-300)">{title}</p>
       <ul className="mt-4 space-y-2.5 text-[15px]">{children}</ul>
     </div>
+  );
+}
+
+function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <Link
+      href={href}
+      className="text-(--color-bone-100)/80 transition-colors hover:text-(--color-accent-300)"
+    >
+      {children}
+    </Link>
   );
 }

@@ -2,10 +2,17 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import JsonLd from "@/components/JsonLd";
 import Kicker from "@/components/nw/Kicker";
 import VerticalFilters from "@/components/VerticalFilters";
 import { getExperiences, type ExperienceListItem, type Vertical } from "@/lib/api";
 import { LOCALES, getDictionary, isLocale, type Locale } from "@/lib/i18n";
+import {
+  OG_LOCALE,
+  SITE_NAME,
+  buildBreadcrumb,
+  buildItemList,
+} from "@/lib/seo";
 
 const VERTICALS: readonly Vertical[] = ["fwt", "adventure", "experience", "gastronomy"];
 
@@ -39,15 +46,25 @@ export async function generateMetadata({ params }: VerticalPageProps): Promise<M
     description: meta.subtitle,
     alternates: {
       canonical: `/${locale}/${rawVertical}/`,
-      languages: Object.fromEntries(
-        LOCALES.map((l) => [l, `/${l}/${rawVertical}/`]),
-      ),
+      languages: {
+        ...Object.fromEntries(LOCALES.map((l) => [l, `/${l}/${rawVertical}/`])),
+        "x-default": `/es/${rawVertical}/`,
+      },
     },
     openGraph: {
+      type: "website",
+      siteName: SITE_NAME,
       title: meta.title,
       description: meta.subtitle,
-      locale,
-      type: "website",
+      url: `/${locale}/${rawVertical}/`,
+      locale: OG_LOCALE[locale],
+      images: [{ url: "/og-image.png", width: 1200, height: 630, alt: meta.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: meta.title,
+      description: meta.subtitle,
+      images: ["/og-image.png"],
     },
   };
 }
@@ -77,8 +94,25 @@ export default async function VerticalListingPage({ params }: VerticalPageProps)
 
   const { status, items } = await loadVerticalItems(vertical, locale);
 
+  const breadcrumb = buildBreadcrumb([
+    { name: dict.nav.home, path: `/${locale}/` },
+    { name: dict.nav[vertical], path: `/${locale}/${vertical}/` },
+  ]);
+  const itemList =
+    status === "ok" && items.length > 0
+      ? buildItemList(
+          meta.title,
+          items.map((it) => ({
+            name: it.title,
+            path: `/${locale}/experiencia/${it.slug}/`,
+          })),
+        )
+      : null;
+
   return (
     <>
+      <JsonLd data={itemList ? [breadcrumb, itemList] : [breadcrumb]} />
+
       {/* Hero / breadcrumb */}
       <section className="relative isolate overflow-hidden bg-(--color-stone-700) text-(--color-bone-100)">
         <div

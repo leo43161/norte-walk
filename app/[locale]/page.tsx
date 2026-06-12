@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import FaqSection from "@/components/nw/FaqSection";
 import GrainOverlay from "@/components/nw/GrainOverlay";
 import Hero from "@/components/nw/Hero";
+import PreLaunchSection from "@/components/nw/PreLaunchSection";
 import type { HeroSlide } from "@/components/nw/HeroCarousel";
 import Kicker from "@/components/nw/Kicker";
 import Section from "@/components/nw/Section";
@@ -11,6 +13,7 @@ import VerticalsStrip from "@/components/nw/VerticalsStrip";
 import { getExperiences, isTrue, type ExperienceListItem, type Vertical } from "@/lib/api";
 import { resolveImageUrl } from "@/lib/format";
 import { getDictionary, isLocale, type Locale } from "@/lib/i18n";
+import { PRELAUNCH } from "@/lib/launch";
 
 interface LocaleHomePageProps {
   params: Promise<{ locale: string }>;
@@ -120,6 +123,9 @@ export default async function LocaleHomePage({ params }: LocaleHomePageProps) {
         slides={slides}
       />
 
+      {/* 01b · PRE-LANZAMIENTO — anticipación + sugerencias (sólo en beta) */}
+      {PRELAUNCH && <PreLaunchSection locale={locale} dict={dict} />}
+
       {/* 02 · QUÉ OFRECE NORTEWALK */}
       <VerticalsStrip locale={locale} dict={dict} entries={verticalEntries} />
 
@@ -220,6 +226,9 @@ export default async function LocaleHomePage({ params }: LocaleHomePageProps) {
           <WhyCard emoji="🏔️" title={dict.home.why4Title} body={dict.home.why4Body} />
         </div>
       </Section>
+
+      {/* 05b · FAQ — contenido SEO + FAQPage schema */}
+      <FaqSection dict={dict} />
 
       {/* 06 · CIERRE — banda cálida con CTA */}
       <section className="bg-(--color-bone-100)">

@@ -8,6 +8,9 @@ import {
   formatDuration,
   formatPrice,
   formatRating,
+  languageFlag,
+  languageLabel,
+  parseLanguagesCsv,
   resolveImageUrl,
 } from "@/lib/format";
 
@@ -34,6 +37,11 @@ export default function TourCard({ exp, locale, dict }: TourCardProps) {
   const duration = formatDuration(exp.duration_min, locale);
   const rating = formatRating(exp.external_rating, exp.external_reviews_count);
   const verticalLabel = dict.nav[exp.vertical];
+
+  // Idiomas reservables (salidas activas); fallback a los del guía.
+  const languages = parseLanguagesCsv(
+    exp.schedule_locales_csv || exp.languages_csv,
+  );
 
   // Datos legibles: "2h 30m · Fácil · Tucumán"
   const dataLine = [
@@ -92,14 +100,37 @@ export default function TourCard({ exp, locale, dict }: TourCardProps) {
         {dataLine && (
           <p className="text-[13px] font-medium text-(--color-stone-500)">{dataLine}</p>
         )}
-        {rating && (
-          <p className="mt-auto flex items-center gap-1.5 pt-1 text-sm font-semibold text-(--color-stone-700)">
-            <span className="text-(--color-accent-500)" aria-hidden>
-              ★
-            </span>
-            <span>{rating.label}</span>
-          </p>
+
+        {/* Idiomas disponibles del tour */}
+        {languages.length > 0 && (
+          <ul className="flex flex-wrap gap-1.5" aria-label={dict.detail.languages}>
+            {languages.map((code) => (
+              <li
+                key={code}
+                className="inline-flex items-center gap-1 rounded-full bg-(--color-bone-200)/80 px-2 py-0.5 text-[11px] font-semibold text-(--color-stone-700)"
+              >
+                <span aria-hidden>{languageFlag(code)}</span>
+                {languageLabel(code, locale)}
+              </li>
+            ))}
+          </ul>
         )}
+
+        <div className="mt-auto flex items-center justify-between gap-2 pt-1.5">
+          {rating ? (
+            <p className="flex items-center gap-1.5 text-sm font-semibold text-(--color-stone-700)">
+              <span className="text-(--color-accent-500)" aria-hidden>
+                ★
+              </span>
+              <span>{rating.label}</span>
+            </p>
+          ) : (
+            <span />
+          )}
+          <span className="text-[13px] font-bold text-(--color-accent-600) transition-transform duration-300 group-hover:translate-x-0.5">
+            {dict.booking.stickyCta} →
+          </span>
+        </div>
       </div>
     </Link>
   );

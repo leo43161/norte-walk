@@ -1,6 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { DM_Sans, Fraunces, Poppins } from "next/font/google";
 import "./globals.css";
+
+import Analytics from "@/components/Analytics";
+import { SITE_URL } from "@/lib/site";
+import { KEYWORDS, SITE_NAME } from "@/lib/seo";
 
 /**
  * Sistema tipográfico "Norte Cálido":
@@ -34,12 +38,69 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "NorteWalk — Conocé Tucumán caminando",
+    default: "NorteWalk — Free walking tours y experiencias en Tucumán",
     template: "%s · NorteWalk",
   },
   description:
-    "Free walking tours y experiencias en Tucumán con guías locales que aman mostrar su tierra. Reservás en un toque por WhatsApp, sin tarjetas ni vueltas.",
+    "Free walking tours, excursiones y experiencias en Tucumán con guías locales habilitados. Elegís fecha e idioma y reservás tu cupo online en un minuto, sin tarjetas.",
+  applicationName: SITE_NAME,
+  keywords: KEYWORDS.es,
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  category: "travel",
+  manifest: "/manifest.webmanifest",
+  formatDetection: { telephone: false, email: false, address: false },
+  appleWebApp: {
+    capable: true,
+    title: SITE_NAME,
+    statusBarStyle: "default",
+  },
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    title: "NorteWalk — Free walking tours y experiencias en Tucumán",
+    description:
+      "Reservá free walking tours, excursiones y experiencias en Tucumán con guías locales. Online, en un minuto y sin tarjetas.",
+    url: SITE_URL,
+    locale: "es_AR",
+    alternateLocale: ["en_US", "pt_BR"],
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "NorteWalk — Free walking tours y experiencias en Tucumán",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "NorteWalk — Free walking tours y experiencias en Tucumán",
+    description:
+      "Free walking tours, excursiones y experiencias en Tucumán con guías locales. Reservá online, sin tarjetas.",
+    images: ["/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#40513b",
+  colorScheme: "light",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -54,6 +115,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-(--color-background) text-(--color-foreground)">
         {children}
+        <Analytics />
       </body>
     </html>
   );

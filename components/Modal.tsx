@@ -8,6 +8,8 @@ interface ModalProps {
   ariaLabelledBy?: string;
   children: React.ReactNode;
   closeLabel?: string;
+  /** "lg" (default): 56rem para layouts a dos columnas. "sm": 30rem para forms. */
+  size?: "lg" | "sm";
 }
 
 /**
@@ -32,6 +34,7 @@ export default function Modal({
   ariaLabelledBy,
   children,
   closeLabel = "Cerrar",
+  size = "lg",
 }: ModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -70,13 +73,14 @@ export default function Modal({
       ref={dialogRef}
       aria-labelledby={ariaLabelledBy}
       onClick={onClick}
-      className="
+      className={`
         m-0 h-full max-h-full w-full max-w-full p-0
         bg-(--color-background) text-(--color-foreground)
-        md:m-auto md:h-auto md:max-h-[90vh] md:w-[min(100%,56rem)] md:rounded-2xl md:shadow-2xl
+        md:m-auto md:h-auto md:max-h-[90vh] md:rounded-2xl md:shadow-2xl
+        ${size === "sm" ? "md:w-[min(100%,30rem)]" : "md:w-[min(100%,56rem)]"}
         backdrop:bg-(--color-stone-900)/60 backdrop:backdrop-blur-sm
         open:flex open:flex-col
-      "
+      `}
     >
       <button
         type="button"

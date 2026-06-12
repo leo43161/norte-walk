@@ -1,15 +1,15 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import BookingPanel from "@/components/BookingPanel";
+import BookingWidget from "@/components/BookingWidget";
 import ExperienceGallery, { type GalleryItem } from "@/components/ExperienceGallery";
+import JsonLd from "@/components/JsonLd";
+import WaitlistCard from "@/components/WaitlistCard";
 import {
   ApiError,
   getExperience,
   getExperiences,
-  isTrue,
   type Experience,
 } from "@/lib/api";
 import {
@@ -20,17 +20,21 @@ import {
   formatDuration,
   formatPrice,
   formatRating,
-  formatTime,
   getCoverImage,
   getGalleryImages,
   getLanguagesForDisplay,
-  getSchedulesForLocale,
   languageLabel,
   pickI18n,
   resolveImageUrl,
-  weekdayLabel,
 } from "@/lib/format";
 import { LOCALES, getDictionary, isLocale, type Locale } from "@/lib/i18n";
+import { PRELAUNCH } from "@/lib/launch";
+import {
+  OG_LOCALE,
+  SITE_NAME,
+  buildBreadcrumb,
+  buildExperienceSchema,
+} from "@/lib/seo";
 
 interface DetailPageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -81,21 +85,36 @@ export async function generateMetadata({ params }: DetailPageProps): Promise<Met
     pickI18n(exp, "meta_description") ?? pickI18n(exp, "short_desc") ?? exp.short_desc ?? undefined;
   const cover = getCoverImage(exp);
 
+  const ogImages = cover
+    ? [{ url: cover, alt: title }]
+    : [{ url: "/og-image.png", width: 1200, height: 630, alt: title }];
+
   return {
     title,
     description: description ?? undefined,
     alternates: {
       canonical: `/${locale}/experiencia/${exp.slug}/`,
-      languages: Object.fromEntries(
-        LOCALES.map((l) => [l, `/${l}/experiencia/${exp.slug}/`]),
-      ),
+      languages: {
+        ...Object.fromEntries(
+          LOCALES.map((l) => [l, `/${l}/experiencia/${exp.slug}/`]),
+        ),
+        "x-default": `/es/experiencia/${exp.slug}/`,
+      },
     },
     openGraph: {
+      type: "website",
+      siteName: SITE_NAME,
       title,
       description: description ?? undefined,
-      images: cover ? [cover] : undefined,
-      locale,
-      type: "website",
+      url: `/${locale}/experiencia/${exp.slug}/`,
+      images: ogImages,
+      locale: OG_LOCALE[locale],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: description ?? undefined,
+      images: cover ? [cover] : ["/og-image.png"],
     },
   };
 }
@@ -122,7 +141,6 @@ export default async function ExperienceDetailPage({ params }: DetailPageProps) 
   const difficulty = difficultyLabel(exp.difficulty, locale);
   const rating = formatRating(exp.external_rating, exp.external_reviews_count);
   const mapsUrl = buildMapsUrl(exp.latitude, exp.longitude);
-  const schedules = getSchedulesForLocale(exp, locale);
   const languages = getLanguagesForDisplay(exp);
 
   // Items para la galería: si no hay imágenes, mostramos solo el cover.
@@ -160,35 +178,32 @@ export default async function ExperienceDetailPage({ params }: DetailPageProps) 
   const includedItems = exp.inclusions?.filter((i) => i.kind === "included") ?? [];
   const excludedItems = exp.inclusions?.filter((i) => i.kind === "excluded") ?? [];
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "TouristTrip",
+  const breadcrumbLd = buildBreadcrumb([
+    { name: dict.nav.home, path: `/${locale}/` },
+    { name: verticalLabel, path: `/${locale}/${exp.vertical}/` },
+    { name: title, path: `/${locale}/experiencia/${exp.slug}/` },
+  ]);
+
+  const tripLd = buildExperienceSchema({
+    url: `/${locale}/experiencia/${exp.slug}/`,
     name: title,
-    description: shortDesc ?? longDesc ?? undefined,
-    image: cover ?? undefined,
+    description: shortDesc ?? longDesc,
+    images: galleryItems.map((g) => g.url),
     touristType: verticalLabel,
-    offers:
-      exp.type === "paid" && exp.price !== null
-        ? {
-            "@type": "Offer",
-            price: String(exp.price),
-            priceCurrency: exp.currency || "ARS",
-            availability: "https://schema.org/InStock",
-          }
-        : undefined,
-    aggregateRating:
-      rating && Number(exp.external_reviews_count) > 0
-        ? {
-            "@type": "AggregateRating",
-            ratingValue: rating.stars,
-            reviewCount: Number(exp.external_reviews_count),
-          }
-        : undefined,
-    provider: {
-      "@type": "Organization",
-      name: exp.provider_name,
-    },
-  };
+    languages: languages.map((l) => l.language_code),
+    providerName: exp.provider_name,
+    city: exp.city.replace(/-/g, " "),
+    isFree: exp.type === "free",
+    price: exp.price !== null ? Number(exp.price) : null,
+    currency: exp.currency,
+    ratingValue: exp.external_rating !== null ? Number(exp.external_rating) : null,
+    reviewCount: Number(exp.external_reviews_count),
+    itinerary: exp.itinerary
+      ? [...exp.itinerary]
+          .sort((a, b) => Number(a.step_order) - Number(b.step_order))
+          .map((s) => ({ name: s.title, description: s.description }))
+      : undefined,
+  });
 
   return (
     <>
@@ -449,164 +464,68 @@ export default async function ExperienceDetailPage({ params }: DetailPageProps) 
             </Card>
           </div>
 
-          {/* Aside derecha: panel de reserva */}
+          {/* Aside derecha: widget de reserva inline */}
           <aside className="space-y-4 md:sticky md:top-6 md:self-start">
-            {/* Card de provider + precio */}
-            <div className="overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-surface) shadow-sm">
-              <div className="border-b border-(--color-border) bg-(--color-bone-200)/40 px-6 py-4">
+            <div className="overflow-hidden rounded-2xl border border-(--color-border) bg-(--color-surface) shadow-[0_18px_44px_-26px_rgba(40,51,31,0.45)]">
+              <div className="px-5 py-5 sm:px-6">
+                {PRELAUNCH ? (
+                  <WaitlistCard
+                    experienceTitle={title}
+                    slug={exp.slug}
+                    priceLabel={price.label}
+                    priceHint={price.hint}
+                    isFree={exp.type === "free"}
+                    fallbackWhatsappUrl={wa}
+                    locale={locale}
+                    dict={dict}
+                  />
+                ) : (
+                  <BookingWidget
+                    experienceId={Number(exp.id)}
+                    maxPax={maxPax}
+                    experienceTitle={title}
+                    providerName={exp.provider_name}
+                    meetingPoint={meetingPoint}
+                    priceLabel={price.label}
+                    priceHint={price.hint}
+                    isFree={exp.type === "free"}
+                    fallbackWhatsappUrl={wa}
+                    locale={locale}
+                    dict={dict}
+                  />
+                )}
+              </div>
+
+              {/* Guía a cargo */}
+              <div className="border-t border-(--color-border) bg-(--color-bone-200)/40 px-5 py-4 sm:px-6">
                 <p className="text-xs font-semibold uppercase tracking-wide text-(--color-muted)">
                   {dict.detail.provider}
                 </p>
-                <p className="mt-0.5 text-base font-semibold text-(--color-foreground)">
-                  {exp.provider_name}
-                </p>
-                <p className="text-xs text-(--color-muted) capitalize">
-                  {exp.provider_city.replace(/-/g, " ")}
-                </p>
-              </div>
-
-              <div className="px-6 py-5">
-                <p className="text-xs font-semibold uppercase tracking-wide text-(--color-muted)">
-                  {dict.price.from}
-                </p>
-                <p className="mt-1 text-3xl font-bold text-(--color-foreground)">
-                  {price.label}
-                </p>
-                {price.hint && (
-                  <p className="text-xs text-(--color-muted)">{price.hint}</p>
-                )}
-
-                <dl className="mt-5 space-y-2.5 border-t border-(--color-border) pt-5 text-sm">
-                  {duration && <InfoRow label={dict.detail.duration} value={duration} />}
-                  <InfoRow label={dict.detail.difficulty} value={difficulty} />
-                  {groupSize && <InfoRow label={dict.detail.groupSize} value={groupSize} />}
-                  <InfoRow label={dict.detail.minAge} value={minAgeLabel} />
+                <div className="mt-1 flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-semibold text-(--color-foreground)">
+                      {exp.provider_name}
+                    </p>
+                    <p className="text-xs capitalize text-(--color-muted)">
+                      {exp.provider_city.replace(/-/g, " ")}
+                    </p>
+                  </div>
                   {languages.length > 0 && (
-                    <InfoRow
-                      label={dict.detail.languages}
-                      value={languages
+                    <p className="text-right text-xs text-(--color-muted)">
+                      {languages
                         .map((l) => languageLabel(l.language_code, locale))
                         .join(" · ")}
-                    />
-                  )}
-                </dl>
-
-                <div className="mt-5 border-t border-(--color-border) pt-5">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-(--color-muted)">
-                    {dict.detail.schedule}
-                  </p>
-                  {schedules.length > 0 ? (
-                    <ul className="mt-2 space-y-1.5 text-sm text-(--color-ink-700)">
-                      {schedules.map((s) => (
-                        <li
-                          key={s.id ?? `${s.day_of_week}-${s.start_time}`}
-                          className="flex items-center justify-between"
-                        >
-                          <span className="font-medium">{weekdayLabel(s.day_of_week, locale)}</span>
-                          <span className="text-(--color-muted)">
-                            {formatTime(s.start_time)}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="mt-2 text-sm text-(--color-muted)">{dict.detail.noSchedule}</p>
+                    </p>
                   )}
                 </div>
-              </div>
-
-              <div className="border-t border-(--color-border) px-6 py-5">
-                <BookingPanel
-                  experienceId={Number(exp.id)}
-                  minPax={minPax}
-                  maxPax={maxPax}
-                  fallbackWhatsappUrl={wa}
-                  locale={locale}
-                  dict={dict}
-                  priceLabel={price.label}
-                  recap={
-                    <div className="flex h-full flex-col gap-5">
-                      {cover && (
-                        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-(--color-stone-700)">
-                          <Image
-                            src={cover}
-                            alt={title}
-                            fill
-                            sizes="(max-width: 768px) 100vw, 28rem"
-                            className="object-cover"
-                          />
-                        </div>
-                      )}
-                      <div>
-                        <p className="text-xs font-semibold text-(--color-accent-300)">
-                          {verticalLabel} · {exp.category}
-                        </p>
-                        <h3 className="mt-1 text-xl font-semibold leading-tight text-(--color-bone-100)">
-                          {title}
-                        </h3>
-                      </div>
-                      <div className="rounded-xl bg-(--color-stone-900)/40 p-4">
-                        <p className="text-2xl font-bold">{price.label}</p>
-                        {price.hint && (
-                          <p className="text-xs text-(--color-bone-300)">{price.hint}</p>
-                        )}
-                      </div>
-                      <dl className="space-y-2.5 text-sm text-(--color-bone-300)">
-                        {duration && <RecapRow label={dict.detail.duration} value={duration} />}
-                        <RecapRow label={dict.detail.difficulty} value={difficulty} />
-                        {groupSize && <RecapRow label={dict.detail.groupSize} value={groupSize} />}
-                        <RecapRow label={dict.detail.minAge} value={minAgeLabel} />
-                        {languages.length > 0 && (
-                          <RecapRow
-                            label={dict.detail.languages}
-                            value={languages
-                              .map((l) => languageLabel(l.language_code, locale))
-                              .join(" · ")}
-                          />
-                        )}
-                      </dl>
-                      {meetingPoint && (
-                        <div className="border-t border-(--color-bone-100)/15 pt-4">
-                          <p className="text-xs font-semibold text-(--color-accent-300)">
-                            {dict.detail.meetingPoint}
-                          </p>
-                          <p className="mt-1 text-sm text-(--color-bone-100)">
-                            {meetingPoint}
-                          </p>
-                          {mapsUrl && (
-                            <a
-                              href={mapsUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="mt-1 inline-block text-xs font-medium text-(--color-accent-400) hover:text-(--color-accent-300) hover:underline"
-                            >
-                              {dict.detail.viewOnMap} →
-                            </a>
-                          )}
-                        </div>
-                      )}
-                      <a
-                        href={wa}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-auto inline-flex items-center justify-center gap-1 rounded-full border border-(--color-bone-100)/30 px-4 py-2 text-xs font-medium text-(--color-bone-100) transition-colors hover:bg-(--color-bone-100)/10"
-                      >
-                        {dict.booking.askOnly} →
-                      </a>
-                    </div>
-                  }
-                />
               </div>
             </div>
           </aside>
         </div>
       </section>
 
-      {/* Schema.org JSON-LD */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      {/* Schema.org JSON-LD: breadcrumb + experiencia (TouristTrip) */}
+      <JsonLd data={[breadcrumbLd, tripLd]} />
     </>
   );
 }
@@ -626,24 +545,6 @@ function SectionHeader({ title }: { title: string }) {
     <h2 className="font-display mb-5 text-2xl text-(--color-foreground)">
       {title}
     </h2>
-  );
-}
-
-function InfoRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex items-baseline justify-between gap-3">
-      <dt className="text-(--color-muted)">{label}</dt>
-      <dd className="font-medium text-(--color-foreground) text-right">{value}</dd>
-    </div>
-  );
-}
-
-function RecapRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex items-baseline justify-between gap-3">
-      <dt className="text-(--color-bone-300)/70">{label}</dt>
-      <dd className="font-semibold text-(--color-bone-100) text-right">{value}</dd>
-    </div>
   );
 }
 

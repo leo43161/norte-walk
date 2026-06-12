@@ -113,6 +113,10 @@ export interface ExperienceListItem {
   external_rating: Numeric | null;
   external_reviews_count: Numeric;
   cover_image: string | null;
+  /** Idiomas que habla el guía, CSV "es,en,pt" (puede venir null). */
+  languages_csv?: string | null;
+  /** Idiomas con salidas activas reservables, CSV "en,es". */
+  schedule_locales_csv?: string | null;
   // Provider flatten:
   provider_id: Numeric;
   provider_name: string;
@@ -224,17 +228,20 @@ export class ApiError extends Error {
   }
 }
 
-// ---------- Lead ----------
+// ---------- Reserva ----------
 
 export interface LeadBody {
   experience_id: number;
-  tourist_name: string;
-  tourist_phone: string;
+  /** Horario elegido — fija hora e idioma de la reserva y valida cupo. */
+  schedule_id: number;
   desired_date: string; // YYYY-MM-DD
-  pax: number;
+  tourist_name: string;
+  tourist_surname: string;
+  tourist_phone: string;
+  tourist_email: string;
+  pax_adults: number;
+  pax_children: number;
   // opcionales:
-  desired_time?: string;
-  tourist_email?: string;
   preferred_locale?: Locale;
   message?: string;
   source?: string;
@@ -245,26 +252,43 @@ export interface LeadBody {
   utm_term?: string;
 }
 
+/** Respuesta de POST /catalog/lead: la reserva quedó registrada. */
 export interface LeadResponse {
   /** Lead id viene como string (MySQL), normalizá con Number() si lo necesitás como int. */
   lead_id: Numeric;
+  /** Código visible para el turista, ej. "NW-7K3FQ". */
+  booking_code: string;
+  experience_title: string;
+  provider_name: string;
+  desired_date: string;
+  desired_time: string | null;
+  /** Idioma real del tour (lo fija el schedule elegido). */
+  tour_locale: Locale;
+  pax: Numeric;
+  /** Fallback para escribirle al guía con el pedido prearmado. */
   whatsapp_url: string;
 }
 
 /**
- * Fecha disponible para reservar (return de `available_dates`).
- * El PHP no devuelve un `string[]` plano — devuelve la metadata del schedule
- * que originó la fecha (capacity_hint, start_time, locale), útil para
- * pre-cargar el horario en el form cuando el usuario elige una fecha.
+ * Salida reservable (return de `available_dates`): fecha × horario × idioma
+ * con el cupo restante ya calculado contra las reservas activas.
  */
-export interface AvailableDate {
+export interface AvailableSlot {
   schedule_id: Numeric;
   available_date: string;  // "YYYY-MM-DD"
-  dow_check: Numeric;
+  day_of_week: Numeric;
   start_time: string;       // "HH:MM:SS"
   locale: Locale;
-  capacity_hint: Numeric | null;
+  /** Cupo total del horario. NULL = sin límite. */
+  capacity: Numeric | null;
+  /** Pax ya reservados (status new/contacted/confirmed). */
+  booked: Numeric;
+  /** Lugares restantes. NULL = sin límite. */
+  spots_left: Numeric | null;
 }
+
+/** @deprecated alias del nombre anterior; usar AvailableSlot. */
+export type AvailableDate = AvailableSlot;
 
 // ---------- Fetch helpers ----------
 
@@ -366,16 +390,16 @@ export async function getProvider(slug: string): Promise<ProviderWithExperiences
   return unwrap<ProviderWithExperiences>(res);
 }
 
-/** GET /catalog/available_dates — usado en CLIENTE (calendar reactivo). */
+/** GET /catalog/available_dates — usado en CLIENTE (calendario con cupos). */
 export async function getAvailableDates(params: {
   experience_id: number;
   from: string; // YYYY-MM-DD
   to: string;   // YYYY-MM-DD (rango <= 60 días)
   locale?: Locale;
-}): Promise<AvailableDate[]> {
+}): Promise<AvailableSlot[]> {
   const url = buildUrl("/catalog/available_dates", params);
   const res = await fetch(url);
-  return unwrap<AvailableDate[]>(res);
+  return unwrap<AvailableSlot[]>(res);
 }
 
 /** POST /catalog/lead — usado en CLIENTE. Redirigir el browser a whatsapp_url. */
@@ -387,6 +411,89 @@ export async function submitLead(body: LeadBody): Promise<LeadResponse> {
     body: JSON.stringify(body),
   });
   return unwrap<LeadResponse>(res);
+}
+
+// ---------- Formularios públicos (contacto / sugerencias / sumate) ----------
+
+/** Campos comunes de tracking/anti-bot que aceptan todos los formularios. */
+interface ContactCommon {
+  locale?: Locale;
+  /** Página desde donde se envió (p.ej. "/es/experiencia/xxx/"). */
+  source_url?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  /** Honeypot: debe ir vacío. Si llega con valor, el backend lo descarta. */
+  hp?: string;
+}
+
+export interface SuggestionBody extends ContactCommon {
+  message: string;
+  name?: string;
+  email?: string;
+}
+
+export interface WaitlistBody extends ContactCommon {
+  email?: string;
+  phone?: string;
+  name?: string;
+  /** Contexto: slug de la experiencia que disparó la waitlist. */
+  ref?: string;
+  subject?: string;
+}
+
+export interface HelpBody extends ContactCommon {
+  message: string;
+  name?: string;
+  email?: string;
+  phone?: string;
+  subject?: string;
+}
+
+export interface JoinBody extends ContactCommon {
+  contact_name: string;
+  email: string;
+  applicant_type?: "guide" | "provider" | "company" | "other";
+  business_name?: string;
+  phone?: string;
+  city?: string;
+  website?: string;
+  offering?: string;
+  message?: string;
+}
+
+export interface ContactAck {
+  /** Id del registro creado (0 si fue descartado por honeypot). */
+  id: Numeric;
+}
+
+async function postContact<T extends object>(path: string, body: T): Promise<ContactAck> {
+  const res = await fetch(buildUrl(path), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  return unwrap<ContactAck>(res);
+}
+
+/** POST /contact/suggest — sugerencia del home ("qué te gustaría ver"). */
+export function submitSuggestion(body: SuggestionBody): Promise<ContactAck> {
+  return postContact("/contact/suggest", body);
+}
+
+/** POST /contact/waitlist — "avisame cuando abra" (pre-lanzamiento). */
+export function submitWaitlist(body: WaitlistBody): Promise<ContactAck> {
+  return postContact("/contact/waitlist", body);
+}
+
+/** POST /contact/help — formulario de Ayuda. */
+export function submitHelp(body: HelpBody): Promise<ContactAck> {
+  return postContact("/contact/help", body);
+}
+
+/** POST /contact/join — guías/prestadores que quieren sumarse. */
+export function submitJoin(body: JoinBody): Promise<ContactAck> {
+  return postContact("/contact/join", body);
 }
 
 // ---------- Helpers de dominio ----------
