@@ -190,7 +190,6 @@ export default async function ExperienceDetailPage({ params }: DetailPageProps) 
     description: shortDesc ?? longDesc,
     images: galleryItems.map((g) => g.url),
     touristType: verticalLabel,
-    languages: languages.map((l) => l.language_code),
     providerName: exp.provider_name,
     city: exp.city.replace(/-/g, " "),
     isFree: exp.type === "free",
@@ -203,6 +202,9 @@ export default async function ExperienceDetailPage({ params }: DetailPageProps) 
           .sort((a, b) => Number(a.step_order) - Number(b.step_order))
           .map((s) => ({ name: s.title, description: s.description }))
       : undefined,
+    meetingPoint,
+    latitude: exp.latitude !== null ? Number(exp.latitude) : null,
+    longitude: exp.longitude !== null ? Number(exp.longitude) : null,
   });
 
   return (

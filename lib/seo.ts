@@ -201,7 +201,6 @@ export interface ExperienceSchemaInput {
   description?: string | null;
   images: string[]; // URLs absolutas
   touristType?: string;
-  languages: string[]; // ISO codes
   providerName: string;
   city?: string;
   isFree: boolean;
@@ -210,12 +209,24 @@ export interface ExperienceSchemaInput {
   ratingValue?: number | null;
   reviewCount?: number | null;
   itinerary?: { name: string; description?: string | null }[];
+  /** Punto de encuentro + coordenadas → tripOrigin (Place con geo). */
+  meetingPoint?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
 }
 
 /**
- * TouristTrip — entidad principal del detalle de experiencia. Enriquecida con
- * provider, oferta (gratis = price 0), rating, itinerario e idiomas para que
- * Google entienda la salida como un producto turístico reservable.
+ * Entidad principal del detalle de experiencia.
+ *
+ * Tipo múltiple `["TouristTrip","Product"]`:
+ *  - TouristTrip modela correctamente la salida (touristType, itinerary,
+ *    provider, tripOrigin — todas propiedades válidas de Trip).
+ *  - Product habilita que `offers` y `aggregateRating` sean propiedades
+ *    reconocidas (no existen en Trip/TouristTrip) → sin warnings del
+ *    validador y elegibles para rich results de precio/estrellas.
+ *
+ * Se omiten `inLanguage` e `isPartOf` porque no son válidas en ninguno de los
+ * dos tipos (el idioma del guía vive en el contenido de la página).
  */
 export function buildExperienceSchema(input: ExperienceSchemaInput) {
   const url = absoluteUrl(input.url);
@@ -227,22 +238,26 @@ export function buildExperienceSchema(input: ExperienceSchemaInput) {
 
   const offerPrice = input.isFree ? "0" : input.price != null ? String(input.price) : null;
 
+  const hasGeo =
+    input.latitude != null &&
+    input.longitude != null &&
+    Number.isFinite(input.latitude) &&
+    Number.isFinite(input.longitude);
+
   return {
     "@context": "https://schema.org",
-    "@type": "TouristTrip",
+    "@type": ["TouristTrip", "Product"],
     "@id": `${url}#trip`,
     name: input.name,
     description: input.description ?? undefined,
     url,
     image: input.images.length > 0 ? input.images : undefined,
     touristType: input.touristType,
-    inLanguage: input.languages.length > 0 ? input.languages : undefined,
     provider: {
       "@type": "Organization",
       name: input.providerName,
       areaServed: input.city ? { "@type": "City", name: input.city } : undefined,
     },
-    isPartOf: { "@id": WEBSITE_ID },
     offers:
       offerPrice != null
         ? {
@@ -251,7 +266,6 @@ export function buildExperienceSchema(input: ExperienceSchemaInput) {
             priceCurrency: input.currency || "ARS",
             availability: "https://schema.org/InStock",
             url,
-            ...(input.isFree ? { description: "A la gorra / tip-based" } : {}),
           }
         : undefined,
     aggregateRating: hasRating
@@ -279,5 +293,16 @@ export function buildExperienceSchema(input: ExperienceSchemaInput) {
             })),
           }
         : undefined,
+    tripOrigin: hasGeo
+      ? {
+          "@type": "Place",
+          name: input.meetingPoint ?? input.city ?? undefined,
+          geo: {
+            "@type": "GeoCoordinates",
+            latitude: input.latitude,
+            longitude: input.longitude,
+          },
+        }
+      : undefined,
   };
 }
