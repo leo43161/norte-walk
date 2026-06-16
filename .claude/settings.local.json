@@ -67,7 +67,20 @@
       "Bash(ls \"C:\\\\xampp\\\\htdocs\\\\nortewalk_api\")",
       "Bash(\"C:\\\\xampp\\\\mysql\\\\bin\\\\mysql.exe\" --version)",
       "Bash(curl -s -X POST http://localhost/nortewalk_api/api/api/login -H \"Content-Type: application/json\" -d \"{\\\\\"email\\\\\":\\\\\"julito@nortewalk.com\\\\\",\\\\\"password\\\\\":\\\\\"admin123\\\\\"}\")",
-      "Bash(curl -s -X POST http://localhost/nortewalk_api/api/api/login -H \"Content-Type: application/json\" -d \"{\\\\\"email\\\\\":\\\\\"julito@nortewalk.com\\\\\",\\\\\"password\\\\\":\\\\\"julito123\\\\\"}\")"
+      "Bash(curl -s -X POST http://localhost/nortewalk_api/api/api/login -H \"Content-Type: application/json\" -d \"{\\\\\"email\\\\\":\\\\\"julito@nortewalk.com\\\\\",\\\\\"password\\\\\":\\\\\"julito123\\\\\"}\")",
+      "PowerShell(Get-Item \"E:\\\\leo\\\\NorteWalk\\\\AQUIIII\\\\c2731887_nortew-6.sql\" | Select-Object Length; \\(Get-Content \"E:\\\\leo\\\\NorteWalk\\\\AQUIIII\\\\c2731887_nortew-6.sql\" | Measure-Object -Line\\).Lines)",
+      "PowerShell(Get-ChildItem \"E:\\\\leo\\\\NorteWalk\\\\AQUIIII\\\\nortewalk\\\\app\",\"E:\\\\leo\\\\NorteWalk\\\\AQUIIII\\\\nortewalk\\\\components\",\"E:\\\\leo\\\\NorteWalk\\\\AQUIIII\\\\nortewalk\\\\lib\",\"E:\\\\leo\\\\NorteWalk\\\\AQUIIII\\\\nortewalk\\\\messages\" -Recurse -File | ForEach-Object { $_.FullName.Replace\\(\"E:\\\\leo\\\\NorteWalk\\\\AQUIIII\\\\nortewalk\\\\\",\"\"\\) })",
+      "PowerShell(& \"C:\\\\xampp\\\\mysql\\\\bin\\\\mysql.exe\" -u root -e \"USE c2731887_nortew; SHOW TABLES; SELECT id, slug, title, vertical, type FROM experiences; SHOW COLUMNS FROM leads;\")",
+      "PowerShell(Set-Content -Path \"$env:TEMP\\\\nw_hash.php\" -Value '<?php echo password_hash\\(\"admin123\", PASSWORD_BCRYPT\\), PHP_EOL, password_hash\\(\"guia123\", PASSWORD_BCRYPT\\), PHP_EOL;' -Encoding ascii; & \"C:\\\\xampp\\\\php\\\\php.exe\" \"$env:TEMP\\\\nw_hash.php\")",
+      "Bash(node -e \"try{require.resolve\\('sharp'\\);console.log\\('sharp: yes'\\)}catch\\(e\\){console.log\\('sharp: no'\\)}; try{require.resolve\\('next/og'\\);console.log\\('next/og: yes'\\)}catch\\(e\\){console.log\\('next/og: no'\\)}\")",
+      "Bash(node scripts/generate-icons.mjs)",
+      "Bash(curl -s http://localhost:4040/es/ -o /tmp/home.html -w \"HTTP %{http_code}\\\\n\")",
+      "Read(//tmp/**)",
+      "Bash(curl -s http://localhost:4040/es/fwt/ -o /tmp/fwt.html -w \"HTTP %{http_code}\\\\n\")",
+      "Bash(grep -oE '\"@type\":\"ItemList\"[^Z]{0,260}' /tmp/fwt.html)",
+      "Bash(curl -s http://localhost:4040/es/experiencia/fwt-centro-historico-tucuman/ -o /tmp/exp.html -w \"HTTP %{http_code}\\\\n\")",
+      "Bash(grep -oE '\"@type\":\"TouristTrip\".{0,520}' /tmp/exp.html)",
+      "Bash(node -e ' *)"
     ]
   }
 }

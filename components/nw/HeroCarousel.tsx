@@ -115,7 +115,7 @@ export default function HeroCarousel({
             key={`${slide.src}-${i}`}
             aria-hidden={!active}
             className="absolute inset-0 transition-opacity duration-700 ease-out"
-            style={{ opacity: active ? 1 : 0 }}
+            style={{ opacity: active ? 1 : 0, pointerEvents: active ? "auto" : "none" }}
           >
             {slide.href ? (
               <Link href={slide.href} className="absolute inset-0 block" tabIndex={active ? 0 : -1}>

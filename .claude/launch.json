@@ -6,6 +6,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 4040
+    },
+    {
+      "name": "panel-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "E:\\leo\\NorteWalk\\AQUIIII\\panel-nortewalk"],
+      "port": 7777
     }
   ]
 }
