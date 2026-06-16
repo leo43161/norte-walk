@@ -3,6 +3,7 @@ import { DM_Sans, Fraunces, Poppins } from "next/font/google";
 import "./globals.css";
 
 import Analytics from "@/components/Analytics";
+import ClarityAnalytics from "@/components/Clarity";
 import { SITE_URL } from "@/lib/site";
 import { KEYWORDS, SITE_NAME } from "@/lib/seo";
 
@@ -116,6 +117,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-(--color-background) text-(--color-foreground)">
         {children}
         <Analytics />
+        <ClarityAnalytics />
       </body>
     </html>
   );
