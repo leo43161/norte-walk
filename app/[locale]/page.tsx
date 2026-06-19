@@ -227,6 +227,33 @@ export default async function LocaleHomePage({ params }: LocaleHomePageProps) {
         </div>
       </Section>
 
+      {/* 05c · SOBRE NORTEWALK — acceso a la página "Nosotros" */}
+      <section className="bg-(--color-background)">
+        <div className="mx-auto max-w-6xl px-6 py-14 sm:py-16">
+          <div className="relative isolate overflow-hidden rounded-[28px] bg-(--color-stone-700) px-8 py-12 text-(--color-bone-100) sm:px-12 sm:py-14">
+            <GrainOverlay
+              className="absolute inset-0 h-full w-full text-(--color-bone-100)"
+              opacity={0.04}
+            />
+            <div className="relative max-w-2xl">
+              <Kicker text={dict.home.aboutKicker} tone="dark" />
+              <h2 className="font-display mt-4 text-3xl leading-tight sm:text-4xl">
+                {dict.home.aboutTitle}
+              </h2>
+              <p className="mt-4 text-[15.5px] leading-relaxed text-(--color-bone-100)/80">
+                {dict.home.aboutBody}
+              </p>
+              <Link
+                href={`/${locale}/nosotros/`}
+                className="mt-6 inline-flex items-center gap-2 rounded-full bg-(--color-accent-500) px-6 py-3 text-[15px] font-semibold text-white shadow-sm transition-colors hover:bg-(--color-accent-600)"
+              >
+                {dict.home.aboutCta} →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* 05b · FAQ — contenido SEO + FAQPage schema */}
       <FaqSection dict={dict} />
 

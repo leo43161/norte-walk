@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { CookieSettingsButton } from "@/components/CookieConsent";
 import NorteWalkLogo from "@/components/NorteWalkLogo";
 import GrainOverlay from "@/components/nw/GrainOverlay";
 import type { Dictionary, Locale } from "@/lib/i18n";
@@ -33,6 +34,12 @@ export default function Footer({ locale, dict }: FooterProps) {
             <p className="mt-5 max-w-sm text-[15px] leading-relaxed text-(--color-bone-100)/75">
               {dict.hero.subtitle}
             </p>
+            <Link
+              href={`/${locale}/nosotros/`}
+              className="mt-4 inline-block text-[15px] font-semibold text-(--color-accent-300) transition-colors hover:text-(--color-accent-200)"
+            >
+              {dict.footer.about} →
+            </Link>
           </div>
 
           {/* Tours */}
@@ -67,6 +74,15 @@ export default function Footer({ locale, dict }: FooterProps) {
             <li>
               <FooterLink href={`/${locale}/privacidad/`}>{dict.footer.legalPrivacy}</FooterLink>
             </li>
+            <li>
+              <FooterLink href={`/${locale}/cancelacion/`}>{dict.footer.legalCancellation}</FooterLink>
+            </li>
+            <li>
+              <FooterLink href={`/${locale}/resenas/`}>{dict.footer.legalReviews}</FooterLink>
+            </li>
+            <li>
+              <FooterLink href={`/${locale}/contenido/`}>{dict.footer.legalContent}</FooterLink>
+            </li>
           </FooterCol>
         </div>
 
@@ -74,9 +90,10 @@ export default function Footer({ locale, dict }: FooterProps) {
           <p className="text-(--color-bone-100)/60">
             ♥ {dict.footer.madeIn}
           </p>
-          <p className="text-(--color-bone-100)/50">
-            © {new Date().getFullYear()} NorteWalk
-          </p>
+          <div className="flex items-center gap-4 text-(--color-bone-100)/50">
+            <CookieSettingsButton label={dict.cookies.settings} />
+            <span>© {new Date().getFullYear()} NorteWalk</span>
+          </div>
         </div>
       </div>
     </footer>

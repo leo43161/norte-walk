@@ -9,7 +9,8 @@
     "adventure": "Aventura",
     "experience": "Experiencias",
     "gastronomy": "Gastronomía",
-    "search": "Buscar"
+    "search": "Buscar",
+    "about": "Nosotros"
   },
   "hero": {
     "kicker": "Free walking tours en Tucumán",
@@ -43,6 +44,10 @@
     "legalTitle": "Legal",
     "legalTerms": "Términos y condiciones",
     "legalPrivacy": "Política de privacidad",
+    "legalReviews": "Opiniones y reseñas",
+    "legalContent": "Política de contenido",
+    "legalCancellation": "Cancelación y asistencia",
+    "about": "Sobre nosotros",
     "madeIn": "Hecho en el norte argentino"
   },
   "common": {
@@ -101,7 +106,11 @@
     "why4Body": "Curado por personas que viven en Tucumán, Salta y Jujuy. No por un algoritmo lejano.",
     "ctaBandTitle": "¿Listo para conocer el norte?",
     "ctaBandBody": "Elegí tu caminata, escribile al guía y viví Tucumán como un local. Empezar es gratis.",
-    "ctaBandCta": "Ver caminatas en Tucumán"
+    "ctaBandCta": "Ver caminatas en Tucumán",
+    "aboutKicker": "Sobre NorteWalk",
+    "aboutTitle": "Tecnología tucumana para que viajes como un local",
+    "aboutBody": "Somos un equipo joven de Tucumán. Filtramos y verificamos que cada guía esté habilitado en la provincia, para que sepas siempre con quién salís.",
+    "aboutCta": "Conocé NorteWalk"
   },
   "faq": {
     "kicker": "Preguntas frecuentes",
@@ -351,8 +360,19 @@
   "legal": {
     "termsTitle": "Términos y Condiciones",
     "privacyTitle": "Política de Privacidad",
+    "reviewsTitle": "Política de Opiniones y Reseñas",
+    "contentTitle": "Política de Contenido",
+    "cancellationTitle": "Política de Cancelación y Asistencia",
     "updated": "Última actualización",
     "draftNote": "Versión preliminar en revisión. Puede cambiar antes del lanzamiento oficial.",
     "tocTitle": "En esta página"
+  },
+  "cookies": {
+    "title": "Usamos cookies",
+    "body": "Usamos cookies necesarias para que el sitio funcione y, con tu permiso, cookies de analítica (Google Analytics y Microsoft Clarity) para mejorar la experiencia.",
+    "accept": "Aceptar",
+    "reject": "Rechazar",
+    "settings": "Cookies",
+    "moreLink": "Más información"
   }
 }

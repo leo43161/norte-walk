@@ -9,7 +9,8 @@
     "adventure": "Adventure",
     "experience": "Experiences",
     "gastronomy": "Gastronomy",
-    "search": "Search"
+    "search": "Search",
+    "about": "About"
   },
   "hero": {
     "kicker": "Free walking tours in Tucumán",
@@ -43,6 +44,10 @@
     "legalTitle": "Legal",
     "legalTerms": "Terms",
     "legalPrivacy": "Privacy",
+    "legalReviews": "Reviews policy",
+    "legalContent": "Content policy",
+    "legalCancellation": "Cancellation & attendance",
+    "about": "About us",
     "madeIn": "Made in northern Argentina"
   },
   "common": {
@@ -101,7 +106,11 @@
     "why4Body": "Curated by people who live in Tucumán, Salta and Jujuy. Not by a distant algorithm.",
     "ctaBandTitle": "Ready to explore the North?",
     "ctaBandBody": "Pick your walk, message the guide and live Tucumán like a local. It's free to start.",
-    "ctaBandCta": "See walking tours in Tucumán"
+    "ctaBandCta": "See walking tours in Tucumán",
+    "aboutKicker": "About NorteWalk",
+    "aboutTitle": "Tucumán-built tech so you travel like a local",
+    "aboutBody": "We're a young team from Tucumán. We filter and verify that every guide is licensed in the province, so you always know who you're going out with.",
+    "aboutCta": "Get to know NorteWalk"
   },
   "faq": {
     "kicker": "FAQ",
@@ -351,8 +360,19 @@
   "legal": {
     "termsTitle": "Terms and Conditions",
     "privacyTitle": "Privacy Policy",
+    "reviewsTitle": "Reviews Policy",
+    "contentTitle": "Content Policy",
+    "cancellationTitle": "Cancellation & Attendance Policy",
     "updated": "Last updated",
     "draftNote": "Preliminary version under review. It may change before the official launch.",
     "tocTitle": "On this page"
+  },
+  "cookies": {
+    "title": "We use cookies",
+    "body": "We use necessary cookies to make the site work and, with your permission, analytics cookies (Google Analytics and Microsoft Clarity) to improve your experience.",
+    "accept": "Accept",
+    "reject": "Reject",
+    "settings": "Cookies",
+    "moreLink": "Learn more"
   }
 }

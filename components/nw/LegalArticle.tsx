@@ -48,10 +48,12 @@ export default function LegalArticle({
 
       <section className="bg-(--color-background)">
         <div className="mx-auto max-w-3xl px-6 py-12 sm:py-16">
-          {/* Aviso de borrador */}
-          <p className="mb-8 rounded-xl border border-(--color-accent-500)/25 bg-(--color-accent-500)/5 px-4 py-3 text-sm text-(--color-ink-700)">
-            {dict.legal.draftNote}
-          </p>
+          {/* Aviso (ej: traducción de cortesía en en/pt) */}
+          {doc.notice && (
+            <p className="mb-8 rounded-xl border border-(--color-accent-500)/25 bg-(--color-accent-500)/5 px-4 py-3 text-sm text-(--color-ink-700)">
+              {doc.notice}
+            </p>
+          )}
 
           <p className="text-[16px] leading-relaxed text-(--color-ink-700)">{doc.intro}</p>
 

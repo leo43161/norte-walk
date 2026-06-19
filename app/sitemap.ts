@@ -10,6 +10,16 @@ export const dynamic = "force-static";
 
 const VERTICALS: readonly Vertical[] = ["fwt", "adventure", "experience", "gastronomy"];
 
+/** Páginas estáticas de contenido (About + legales), una por locale. */
+const STATIC_PAGES = [
+  "nosotros",
+  "terminos",
+  "privacidad",
+  "cancelacion",
+  "resenas",
+  "contenido",
+] as const;
+
 /**
  * Genera el sitemap.xml estático en `out/sitemap.xml`.
  *
@@ -51,6 +61,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: "weekly",
         priority: 0.8,
         alternates: { languages: langs((l) => `/${l}/${v}/`) },
+      });
+    }
+  }
+
+  // --- Páginas estáticas (About + legales) × locales ---
+  for (const locale of LOCALES) {
+    for (const slug of STATIC_PAGES) {
+      entries.push({
+        url: `${SITE_URL}/${locale}/${slug}/`,
+        lastModified: now,
+        changeFrequency: "yearly",
+        priority: slug === "nosotros" ? 0.6 : 0.4,
+        alternates: { languages: langs((l) => `/${l}/${slug}/`) },
       });
     }
   }

@@ -9,7 +9,8 @@
     "adventure": "Aventura",
     "experience": "Experiências",
     "gastronomy": "Gastronomia",
-    "search": "Buscar"
+    "search": "Buscar",
+    "about": "Sobre"
   },
   "hero": {
     "kicker": "Free walking tours em Tucumán",
@@ -43,6 +44,10 @@
     "legalTitle": "Legal",
     "legalTerms": "Termos",
     "legalPrivacy": "Privacidade",
+    "legalReviews": "Política de avaliações",
+    "legalContent": "Política de conteúdo",
+    "legalCancellation": "Cancelamento e comparecimento",
+    "about": "Sobre nós",
     "madeIn": "Feito no norte argentino"
   },
   "common": {
@@ -101,7 +106,11 @@
     "why4Body": "Curado por pessoas que moram em Tucumán, Salta e Jujuy. Não por um algoritmo distante.",
     "ctaBandTitle": "Pronto para conhecer o norte?",
     "ctaBandBody": "Escolha sua caminhada, fale com o guia e viva Tucumán como um local. Começar é grátis.",
-    "ctaBandCta": "Ver caminhadas em Tucumán"
+    "ctaBandCta": "Ver caminhadas em Tucumán",
+    "aboutKicker": "Sobre a NorteWalk",
+    "aboutTitle": "Tecnologia tucumana para você viajar como um local",
+    "aboutBody": "Somos uma equipe jovem de Tucumán. Filtramos e verificamos que cada guia esteja habilitado na província, para que você sempre saiba com quem está saindo.",
+    "aboutCta": "Conheça a NorteWalk"
   },
   "faq": {
     "kicker": "Perguntas frequentes",
@@ -351,8 +360,19 @@
   "legal": {
     "termsTitle": "Termos e Condições",
     "privacyTitle": "Política de Privacidade",
+    "reviewsTitle": "Política de Avaliações",
+    "contentTitle": "Política de Conteúdo",
+    "cancellationTitle": "Política de Cancelamento e Comparecimento",
     "updated": "Última atualização",
     "draftNote": "Versão preliminar em revisão. Pode mudar antes do lançamento oficial.",
     "tocTitle": "Nesta página"
+  },
+  "cookies": {
+    "title": "Usamos cookies",
+    "body": "Usamos cookies necessários para o site funcionar e, com a sua permissão, cookies de analítica (Google Analytics e Microsoft Clarity) para melhorar a experiência.",
+    "accept": "Aceitar",
+    "reject": "Rejeitar",
+    "settings": "Cookies",
+    "moreLink": "Saiba mais"
   }
 }

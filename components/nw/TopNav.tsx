@@ -50,6 +50,14 @@ export default function TopNav({ locale, dict, transparent = false }: TopNavProp
               </Link>
             </li>
           ))}
+          <li>
+            <Link
+              href={`/${locale}/nosotros/`}
+              className="text-(--color-bone-100)/85 transition-colors hover:text-(--color-accent-300)"
+            >
+              {dict.nav.about}
+            </Link>
+          </li>
         </ul>
 
         <div className="ml-auto flex items-center gap-4">

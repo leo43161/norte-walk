@@ -1,19 +1,25 @@
+"use client";
+
 import Script from "next/script";
+
+import { useCookieConsent } from "@/components/CookieConsent";
 
 /**
  * Google Analytics 4 (gtag.js) adaptado a Next.js.
  *
- * Se activa seteando `NEXT_PUBLIC_GA_ID` (el Measurement ID que te da Google,
- * formato `G-XXXXXXXXXX`) en el entorno de build. Si no está seteado, no
- * renderiza nada (no carga GA en local/preview).
+ * Se activa cuando se cumplen TRES condiciones:
+ *  - `NEXT_PUBLIC_GA_ID` está seteado (Measurement ID `G-XXXXXXXXXX`),
+ *  - el build es de producción (no manda tráfico de dev/preview a GA),
+ *  - el visitante aceptó las cookies de analítica (consentimiento opt-in).
  *
- * Usa next/script con strategy "afterInteractive": el snippet se inyecta en
- * cliente, compatible con el export estático.
+ * Si falta cualquiera, no renderiza nada → GA no se carga.
  */
 export default function Analytics() {
+  const { consent } = useCookieConsent();
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
-  // Sólo en producción: evita mandar tráfico de dev/preview a GA.
+
   if (!gaId || process.env.NODE_ENV !== "production") return null;
+  if (consent !== "granted") return null;
 
   return (
     <>

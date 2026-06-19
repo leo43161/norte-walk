@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import Analytics from "@/components/Analytics";
+import ClarityAnalytics from "@/components/Clarity";
+import { CookieBanner } from "@/components/CookieConsent";
 import JsonLd from "@/components/JsonLd";
 import LocaleLangSetter from "@/components/LocaleLangSetter";
 import Footer from "@/components/nw/Footer";
@@ -81,6 +84,9 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
       <TopNav locale={locale} dict={dict} />
       <main className="flex-1">{children}</main>
       <Footer locale={locale} dict={dict} />
+      <CookieBanner locale={locale} dict={dict} />
+      <Analytics />
+      <ClarityAnalytics />
     </>
   );
 }
